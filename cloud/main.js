@@ -152,13 +152,15 @@ AV.Cloud.beforeSave("Message", function(request, response){
     }).then(function(user) {
 
         console.log("2");
-        user2 = user;
+//        user2 = user;
+        user2 = AV.Object.createWithoutData("_User", user.id);
         user1.relation('contacts').add(user2);
         return user1.save();
 
     }).then(function(user) {
 
         console.log("3");
+        user1 =  AV.Object.createWithoutData("_User", user.id);
         user2.relation('contacts').add(user1);
         return user2.save();
 
@@ -199,9 +201,9 @@ function PM25() {
                     for (var i in resultInfo)
                     {
                         var aqiInfo = resultInfo[i];
-//                        if (!__production)
-//                        console.dir(aqiInfo);
-//                        console.dir(aqiInfo.area);
+                        if (!__production)
+                        console.dir(aqiInfo);
+                        console.dir(aqiInfo.primary_pollutant);
 
                         var aqi = new AirQualityIndex();
                         aqi.set('area', aqiInfo.area);
