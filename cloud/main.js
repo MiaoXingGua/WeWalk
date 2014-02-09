@@ -199,8 +199,8 @@ function PM25() {
                     for (var i in resultInfo)
                     {
                         var aqiInfo = resultInfo[i];
-                        if (!__production)
-                        console.dir(aqiInfo);
+//                        if (!__production)
+//                        console.dir(aqiInfo);
 //                        console.dir(aqiInfo.area);
 
                         var aqi = new AirQualityIndex();
@@ -263,7 +263,7 @@ function PM25() {
 
 }
 
-if (!__production)
+if (__production)
 {
     AV.Cloud.setInterval('PM25_timer', 60*20, PM25);
 }
