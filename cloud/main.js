@@ -135,7 +135,7 @@ AV.Cloud.beforeSave("Message", function(request, response){
     if (!toUser.id || !fromUser.id)
     {
         console.log("联系人id为空");
-        response.error(error);
+        response.error("联系人id为空");
     }
 
     var User = AV.Object.extend('_User');
@@ -152,15 +152,15 @@ AV.Cloud.beforeSave("Message", function(request, response){
     }).then(function(user) {
 
         console.log("2");
-//        user2 = user;
-        user2 = AV.Object.createWithoutData("_User", user.id);
+        user2 = user;
+//        user2 = AV.Object.createWithoutData("_User", user.id);
         user1.relation('contacts').add(user2);
         return user1.save();
 
     }).then(function(user) {
 
         console.log("3");
-        user1 =  AV.Object.createWithoutData("_User", user.id);
+//        user1 =  AV.Object.createWithoutData("_User", user.id);
         user2.relation('contacts').add(user1);
         return user2.save();
 
