@@ -37,12 +37,23 @@
     return self;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:YES];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectPhotos:) name:DIDSELECTUSERPHOTO object:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+    
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectPhotos:) name:DIDSELECTUSERPHOTO object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshUserInfo:) name:REFRESHUSERINFO object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeCoverImageView:) name:REMOVECOVERIMAGEVIEW object:nil];
     
@@ -410,6 +421,8 @@
 
 - (void)didSelectPhotos:(NSNotification *)into
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DIDSELECTUSERPHOTO object:nil];
+
     UserPhotoView *photo = (UserPhotoView *)[into object];
     
     if (photo!=nil)

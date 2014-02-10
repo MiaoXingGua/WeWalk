@@ -200,8 +200,6 @@
     userHeadView.backgroundColor = [UIColor clearColor];
     [coverView addSubview:userHeadView];
     
- 
-    
     nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(73, clothesView.frame.size.height, 180, 30)];
     nameLabel.backgroundColor = [UIColor clearColor];
     nameLabel.textColor = [UIColor blackColor];

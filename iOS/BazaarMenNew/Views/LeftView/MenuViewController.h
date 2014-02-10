@@ -22,4 +22,6 @@
     UILabel *usernameLabel;
 }
 
+@property(nonatomic,assign)int unReadNum;
+@property(nonatomic,strong)UIImageView *unreadView;
 @end

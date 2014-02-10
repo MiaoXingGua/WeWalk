@@ -29,6 +29,8 @@
 @property(nonatomic,assign)BOOL fromcenter;
 @property(nonatomic,assign)BOOL isBack;
 @property(nonatomic,assign)BOOL isRequest;
+@property(nonatomic,assign)BOOL isHistroy;
+
 @property(nonatomic,strong)NSMutableArray *datalist;
 @property(nonatomic,strong)NSMutableArray *messagelist;
 

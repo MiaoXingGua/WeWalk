@@ -10,6 +10,7 @@
 #import "WeatherRequestManager.h"
 #import "ALGPSHelper.h"
 #import "ALBazaarSDK.h"
+#import "UIImage+imageNamed_Hack.h"
 
 @interface SendPhotosViewController ()
 
@@ -295,7 +296,28 @@
     
     for (int i=0; i<self.imageArray.count; i++)
     {
-        AVFile *imagefile = [AVFile fileWithName:@"image.jpg" data:UIImageJPEGRepresentation([self.imageArray objectAtIndex:i], 0.5)];
+        UIImage *tempimg1 = [self.imageArray objectAtIndex:i];
+        UIImage *tempimg2; //压缩图片
+        
+        NSLog(@"%f,%f",tempimg1.size.width,tempimg1.size.height);
+        
+        float resolution = tempimg1.size.width*tempimg1.size.height;
+        float i = resolution/150000;
+        
+        NSLog(@"%f",resolution/150000);
+        
+        if (i>=8)
+        {
+            i=8;
+        }
+        else
+        {
+            i=1;
+        }
+        
+        tempimg2 = [tempimg1 imageScaled:i];
+        
+        AVFile *imagefile = [AVFile fileWithName:@"image.jpg" data:UIImageJPEGRepresentation(tempimg2, 1)];
         [temp addObject:imagefile];
     }
     

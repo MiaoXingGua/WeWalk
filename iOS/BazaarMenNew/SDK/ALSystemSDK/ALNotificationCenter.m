@@ -319,7 +319,7 @@ static ALNotificationCenter *notificationCenter = nil;
     
     //发通知
     AVQuery *installationQ = [AVInstallation query];
-    [installationQ whereKey:@"owner" containedIn:toUser];
+    [installationQ whereKey:@"user" containedIn:toUser];
     
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     
@@ -432,7 +432,7 @@ static ALNotificationCenter *notificationCenter = nil;
     
     //发通知
     AVQuery *installationQ = [AVInstallation query];
-    [installationQ whereKey:@"owner" containedIn:toUser];
+    [installationQ whereKey:@"user" containedIn:toUser];
     
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     

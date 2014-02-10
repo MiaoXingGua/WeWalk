@@ -124,9 +124,10 @@
     
     [self addRefreshHeaderView];
     
-    [self beginPulldownAnimation];
+    [self requestUnReadMessage];
+   // [self beginPulldownAnimation];
     
-    [self updateUnReadState];
+    
 }
 
 - (void)beginPulldownAnimation
@@ -144,6 +145,8 @@
     {
         return;
     }
+    
+    self.isHistroy=NO;
     
     [self sendMassage:self.inputToolBarView.textView.text from:YES isHistroy:NO SendUser:[ALBazaarEngine defauleEngine].user];
     
@@ -181,7 +184,7 @@
     {
 		self.lastTime = nowTime;
         
-        if (histroy==NO)
+        if (histroy==NO && self.isHistroy==NO)
         {
             [self.datalist addObject:nowTime];
         }
@@ -192,7 +195,7 @@
     {
 		self.lastTime = [NSDate date];
         
-        if (histroy==NO)
+        if (histroy==NO && self.isHistroy==NO)
         {
             [self.datalist addObject:[NSDate date]];
         }
@@ -239,7 +242,7 @@
     
     __block typeof(self) bself = self;
     
-    UITableView *__tabelview = _tableView;
+    __block UITableView *__tabelview = _tableView;
     
     
     NSDate *_date=nil;
@@ -329,6 +332,95 @@
         
         [bself doneLoadingTableViewData];
         
+    }];
+}
+
+- (void)requestUnReadMessage
+{
+   // [ProgressHUD show:@"加载中"];
+    
+    __block typeof(self) bself = self;
+    
+    __block UITableView *__tabelview = _tableView;
+
+    [[ALBazaarEngine defauleEngine] getUserUnreadMessageWithUser:self.chatUser limit:1000 lessThanDate:nil block:^(NSArray *messages, NSError *error) {
+        
+        if (bself.isBack==YES)
+        {
+            return;
+        }
+        
+        if (!error)
+        {
+            if (messages.count==0)
+            {
+                [ProgressHUD showSuccess:@"没有内容"];
+            }
+            else
+            {
+                for (int i=0; i<messages.count; i++)
+                {
+                    Message *_message = [messages objectAtIndex:i];
+                    
+                    BOOL fromSelf=NO;
+                    
+                    if ([[ALBazaarEngine defauleEngine].user.objectId isEqualToString:_message.fromUser.objectId])
+                    {
+                        fromSelf=YES;
+                    }
+                    
+                    _nextTime = _message.createdAt;
+                    
+                    
+                    if (i==0)
+                    {
+                        _historyDate = _message.createdAt;
+                        [bself.datalist addObject:_nextTime];
+                    }
+                    
+                    int t1 = [_nextTime timeIntervalSince1970];
+                    int t2 = [_historyDate timeIntervalSince1970];
+                    
+                    NSLog(@"%d",t1-t2);
+                    
+                    if ([_nextTime timeIntervalSince1970]-[_historyDate timeIntervalSince1970]>120)
+                    {
+                        _historyDate = _nextTime;
+                        
+                        [bself.datalist addObject:_nextTime];
+                    }
+
+                    
+                    if (_message.content.text.length>0)
+                    {
+                        bself.isHistroy=YES;
+                        
+                        [bself sendMassage:_message.content.text from:fromSelf isHistroy:NO SendUser:_message.fromUser];
+                    }
+                }
+                
+                [__tabelview reloadData];
+                
+                if (self.datalist.count>0)
+                {
+                    [__tabelview scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:bself.datalist.count-1 inSection:0]
+                                       atScrollPosition: UITableViewScrollPositionBottom
+                                               animated:NO];
+                }
+                
+            }
+            
+          //  [ProgressHUD showSuccess:@"成功"];
+            
+        }
+        else
+        {
+          //  [ProgressHUD showError:@"失败"];
+        }
+        
+        bself.isRequest=NO;
+        
+        [bself updateUnReadState];
     }];
 }
 

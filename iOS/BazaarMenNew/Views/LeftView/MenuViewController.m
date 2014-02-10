@@ -41,6 +41,38 @@
     self.sidePanelController.leftPanel = n;
 }
 
+- (void)getAllUnReadMessageNum
+{
+    __block typeof(self) bself = self;
+
+    [[ALBazaarEngine defauleEngine] getALLUnreadMessageCountWithBlock:^(NSInteger messagesCount, NSError *error) {
+        
+      //  bself.unReadNum = messagesCount;
+        
+        if (messagesCount>0)
+        {
+            bself.unreadView.hidden=NO;
+        }
+        else
+        {
+            bself.unreadView.hidden=YES;
+        }
+        
+    }];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    
+    [self getAllUnReadMessageNum];
+}
+
+- (void)leftViewWillAppear
+{
+    [self getAllUnReadMessageNum];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -48,6 +80,11 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logoutUser) name:LOGOUTUSER object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshUserInfo:) name:REFRESHUSERINFO object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(leftViewWillAppear) name:NOTIFICATION_JASIDE_LOAD_LEFT_PANEL object:nil];
+
+    
+    
 
     UIImageView *backImageview = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"_0001_背景.png"]];
     backImageview.userInteractionEnabled = YES;
@@ -170,6 +207,22 @@
             [btn setTitle:@"设置 Setting" forState:UIControlStateNormal];
         }
     }
+    
+    self.unreadView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"unreadnum.png"]];
+    self.unreadView.userInteractionEnabled = YES;
+    [self.backgroundView addSubview:self.unreadView];
+    self.unreadView.hidden=YES;
+    
+    if (_h==10)
+    {
+        self.unreadView.frame = CGRectMake(34, 300, 10, 10);
+    }
+    else
+    {
+        self.unreadView.frame = CGRectMake(34, 318, 10, 10);
+    }
+    
+    
 }
 
 - (void)refreshUserInfo:(NSNotification *)info

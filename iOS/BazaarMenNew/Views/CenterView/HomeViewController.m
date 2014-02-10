@@ -25,6 +25,8 @@
 #import "SystemConfigManager.h"
 #import "ConstellationListViewController.h"
 
+#import "textAViewController.h"
+
 @interface HomeViewController ()
 
 @end
@@ -548,16 +550,19 @@
 #pragma mark - 显示发送自拍View
 - (void)showSendAutodyneBtnView
 {
-    if ([[ALBazaarEngine defauleEngine] isLoggedIn]==NO)
-    {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请先登录" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alert show];
-        
-        return;
-    }
+    textAViewController *aview = [[textAViewController alloc] init];
+    [self.navigationController pushViewController:aview animated:YES];
     
-    UIActionSheet *_sheet = [[UIActionSheet alloc] initWithTitle:@"选择操作" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照", @"打开相册", nil];
-    [_sheet showInView:self.view];
+//    if ([[ALBazaarEngine defauleEngine] isLoggedIn]==NO)
+//    {
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请先登录" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+//        [alert show];
+//        
+//        return;
+//    }
+//    
+//    UIActionSheet *_sheet = [[UIActionSheet alloc] initWithTitle:@"选择操作" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照", @"打开相册", nil];
+//    [_sheet showInView:self.view];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex

@@ -252,7 +252,7 @@
                 [bself addfootView];
             }
             
-            __water.contentSize = CGSizeMake(320, waterFlow.contentSize.height+50);
+           // __water.contentSize = CGSizeMake(320, waterFlow.contentSize.height+50);
         }
         else
         {
@@ -330,7 +330,7 @@
             
             [bself addfootView];
 
-            __water.contentSize = CGSizeMake(320, waterFlow.contentSize.height+50);
+           // __water.contentSize = CGSizeMake(320, waterFlow.contentSize.height+50);
 
            
         }
@@ -474,7 +474,7 @@
         _loadFooterView=nil;
     }
     
-    _loadFooterView = [[EGOLoadTableFooterView alloc] initWithFrame:CGRectMake(0, waterFlow.contentSize.height-10, self.view.frame.size.width, waterFlow.bounds.size.height) arrowImageName:@"" textColor:[UIColor grayColor]];
+    _loadFooterView = [[EGOLoadTableFooterView alloc] initWithFrame:CGRectMake(0, waterFlow.contentSize.height, self.view.frame.size.width, waterFlow.bounds.size.height) arrowImageName:@"" textColor:[UIColor grayColor]];
     _loadFooterView.backgroundColor = [UIColor clearColor];
     _loadFooterView.delegate = self;
     [waterFlow addSubview:_loadFooterView];

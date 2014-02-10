@@ -247,7 +247,7 @@ static ALBazaarEngine *engine = nil;
         {
             [[NSNotificationCenter defaultCenter] postNotificationName:LOGIN_SUCCESS object:bself userInfo:nil];
             
-            [self bindingUser];
+            [bself bindingUser];
         }
         
         if (resultBlock)
@@ -268,19 +268,31 @@ static ALBazaarEngine *engine = nil;
         [User logOut];
     }
     
-//    __block typeof (self) bself = self;
+    __block typeof (self) bself = self;
     
     User *user = [User user];
     user.username = theUsername;
     user.password = thePassword;
-    [user signUpInBackgroundWithBlock:resultBlock];
+    [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (user && !error)
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:LOGIN_SUCCESS object:bself userInfo:nil];
+            
+            [bself bindingUser];
+        }
+        
+        if (resultBlock)
+        {
+            resultBlock(user!=nil,error);
+        }
+    }];
 }
 
 //登出
 - (void)logOut
 {
     [User logOut];
-    //    [self unbindingUser];
+    [self unbindingUser];
 //    [AVOSCloudSNS logout:AVOSCloudSNSSinaWeibo];
 //    [AVOSCloudSNS logout:AVOSCloudSNSQQ];
 }
@@ -290,6 +302,7 @@ static ALBazaarEngine *engine = nil;
 //添加设备绑定
 - (void)bindingUser
 {
+    NSLog(@"install = %@",[AVInstallation currentInstallation]);
     [[AVInstallation currentInstallation] setObject:self.user forKey:@"user"];
     [[AVInstallation currentInstallation] saveEventually];
 }
