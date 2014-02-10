@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/streetsnap_waterfall_toplayout_h"
+    android:background="#6d8346"
+    android:paddingLeft="@dimen/streetsnap_waterfall_toplayout_padingleft"
+    android:paddingRight="@dimen/streetsnap_waterfall_toplayout_padingleft"
+    android:paddingTop="@dimen/streetsnap_waterfall_toplayout_padingleft" >
+
+    <Button
+        android:id="@+id/newpic_btn"
+        android:layout_width="@dimen/streetsnap_waterfall_topbtn1_h"
+        android:layout_height="@dimen/streetsnap_waterfall_topbtn1_h"
+        android:alpha="50"
+        android:background="@drawable/grey_crcle" />
+
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="@dimen/streetsnap_waterfall_topbtn1_h"
+        android:layout_height="@dimen/streetsnap_waterfall_topbtn1_h"
+        android:layout_marginLeft="15dp"
+        android:gravity="center_vertical"
+        android:text="最新"
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/hotpic_btn"
+        android:layout_width="@dimen/streetsnap_waterfall_topbtn2_h"
+        android:layout_height="@dimen/streetsnap_waterfall_topbtn2_h"
+        android:layout_alignParentRight="true"
+        android:alpha="50"
+        android:background="@drawable/streetsnap_pullwater_topbtn1"
+        android:text="最热"
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/nearby_btn"
+        android:layout_width="@dimen/streetsnap_waterfall_topbtn2_h"
+        android:layout_height="@dimen/streetsnap_waterfall_topbtn2_h"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-13dp"
+        android:alpha="50"
+        android:background="@drawable/streetsnap_pullwater_topbtn1"
+        android:text="附近"
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
+
+</RelativeLayout>

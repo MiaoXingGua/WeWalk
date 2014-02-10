@@ -1,0 +1,144 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#f5f7f9"
+    android:orientation="vertical" >
+
+    <include layout="@layout/actionbar_layout" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/allschepage_childe1layout_h"
+            android:layout_marginTop="0.5dp"
+            android:background="#3a3c44"
+            android:gravity="center_vertical"
+            android:paddingLeft="40dp" >
+
+            <ImageButton
+                android:id="@+id/imbt_upmoth"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:scaleType="center"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_cq_dairly"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <ImageButton
+                android:id="@+id/imbt_nextmoth"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:scaleType="center"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/allschepage_childe2layout_h"
+            android:background="#e7e7e7"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/allschepage_childe3layout_paddingleft"
+            android:paddingRight="@dimen/allschepage_childe3layout_paddingleft" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/su"
+                android:textColor="@color/caltitle"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/mo"
+                android:textColor="@color/caltitle"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/tu"
+                android:textColor="@color/caltitle"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/we"
+                android:textColor="@color/caltitle"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/th"
+                android:textColor="@color/caltitle"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/fr"
+                android:textColor="@color/caltitle"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/sa"
+                android:textColor="@color/caltitle"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <ViewFlipper
+            android:id="@+id/vf_clendtxt"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/allschepage_childe3layout_h"
+            android:background="#ffffff"
+            android:paddingLeft="@dimen/allschepage_childe3layout_paddingleft"
+            android:paddingRight="@dimen/allschepage_childe3layout_paddingleft" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/callv"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/allschepage_childe4layout_ah"
+        android:layout_marginTop="20dp"
+        android:background="#ffffff" />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/ic_launcher"
+        android:visibility="gone" />
+
+</LinearLayout>

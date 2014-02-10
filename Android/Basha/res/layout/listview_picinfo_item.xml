@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="#eeeeee"
+    android:padding="8dp" >
+
+    <ImageView
+        android:id="@+id/bigimg_imageview"
+        android:layout_width="43dp"
+        android:layout_height="43dp" 
+        android:layout_gravity="center_vertical"
+        android:background="#00000000"
+        android:scaleType="centerCrop"
+        android:src="@drawable/empty_photo"
+        />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp" >
+
+        <TextView
+            android:id="@+id/name_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:textSize="16sp"
+            android:text="Dala:" />
+
+        <TextView
+            android:id="@+id/time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="2013-12-31" />
+
+        <TextView
+            android:layout_marginTop="3dp"
+            android:id="@+id/content_textview"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/time_textview"
+            android:text="这是正文" 
+             />
+    </RelativeLayout>
+
+</LinearLayout>
