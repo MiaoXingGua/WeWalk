@@ -362,6 +362,7 @@
 		1DF4717D188FB37400FE75F9 /* arrowsImageOthers.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DF4717A188FB37400FE75F9 /* arrowsImageOthers.png */; };
 		1DF4717E188FB37400FE75F9 /* arrowsImageSelf.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DF4717B188FB37400FE75F9 /* arrowsImageSelf.png */; };
 		1DF47180188FB78600FE75F9 /* unread_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DF4717F188FB78600FE75F9 /* unread_background.png */; };
+		1DFFCDD918A8F1DD00496892 /* UIImage+imageNamed_Hack.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DFFCDD818A8F1DD00496892 /* UIImage+imageNamed_Hack.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -878,6 +879,8 @@
 		1DF4717A188FB37400FE75F9 /* arrowsImageOthers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrowsImageOthers.png; sourceTree = "<group>"; };
 		1DF4717B188FB37400FE75F9 /* arrowsImageSelf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrowsImageSelf.png; sourceTree = "<group>"; };
 		1DF4717F188FB78600FE75F9 /* unread_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unread_background.png; sourceTree = "<group>"; };
+		1DFFCDD718A8F1DD00496892 /* UIImage+imageNamed_Hack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+imageNamed_Hack.h"; sourceTree = "<group>"; };
+		1DFFCDD818A8F1DD00496892 /* UIImage+imageNamed_Hack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+imageNamed_Hack.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1703,6 +1706,7 @@
 		1DC410DB188D41940066EA8B /* Operates */ = {
 			isa = PBXGroup;
 			children = (
+				1DFFCDD618A8F1DD00496892 /* Category */,
 				1D6FA47D18912A2C00969B13 /* scheduleView */,
 				1D30C8C0188D4C3600A2985A /* cell */,
 				1D30C8D0188D4C3600A2985A /* superViewController */,
@@ -1875,6 +1879,15 @@
 				1D30C8BC188D4C2C00A2985A /* CityButton.m */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		1DFFCDD618A8F1DD00496892 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				1DFFCDD718A8F1DD00496892 /* UIImage+imageNamed_Hack.h */,
+				1DFFCDD818A8F1DD00496892 /* UIImage+imageNamed_Hack.m */,
+			);
+			path = Category;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2305,6 +2318,7 @@
 				1D30C8AB188D4BAE00A2985A /* SecurityCodeViewController.m in Sources */,
 				1DC2893918A87AA800542DCA /* Advertisement.m in Sources */,
 				1D30C8B6188D4BAE00A2985A /* MenuViewController.m in Sources */,
+				1DFFCDD918A8F1DD00496892 /* UIImage+imageNamed_Hack.m in Sources */,
 				1DC2893A18A87AA800542DCA /* Brand.m in Sources */,
 				1DC2893F18A87AA800542DCA /* Photo.m in Sources */,
 				1D83A7BF188D451500E18CBA /* SDImageCache.m in Sources */,
