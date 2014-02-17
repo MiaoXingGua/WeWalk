@@ -371,7 +371,7 @@ AV.Cloud.beforeSave("Schedule", function(request, response) {
         response.success();
     }
 
-    createPush([userId],pushDate,schedlue.get('content').get('text'),function(push,error){
+    createPush([userId],pushDate,pushDate,schedlue.get('content').get('text'),function(push,error){
 
         if (push && !error)
         {
@@ -381,6 +381,7 @@ AV.Cloud.beforeSave("Schedule", function(request, response) {
         }
         else
         {
+            console.log('日程保存失败');
             response.error(error);
         }
     });
@@ -501,7 +502,7 @@ AV.Cloud.define("datetime", function(request, response) {
 
 //    var timestamp = Date.parse(new Date());
     var timestamp = new Date().getTime();
-    console.log(timestamp);
+//    console.log(timestamp);
     response.success(timestamp);
 });
 
