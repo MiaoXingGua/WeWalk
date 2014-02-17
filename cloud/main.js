@@ -265,14 +265,14 @@ function PM25() {
     
 }
 
-if (__production)
-{
-    AV.Cloud.setInterval('PM25_timer', 60*20, PM25);
-}
-else
-{
-    AV.Cloud.define("PM25_define", PM25);
-}
+//if (__production)
+//{
+//    AV.Cloud.setInterval('PM25_timer', 60*20, PM25);
+//}
+//else
+//{
+//    AV.Cloud.define("PM25_define", PM25);
+//}
 
 //创建通知
 function createPush(users,pushDate,alert,done){
@@ -290,6 +290,7 @@ function createPush(users,pushDate,alert,done){
         console.log('创建通知参数错误');
         
         done(null,'创建通知参数错');
+        return;
     }
     
     //    console.dir(pushDate);
@@ -358,34 +359,31 @@ function deletePush(push,done){
 //保存日程之前（创建推送通知）
 AV.Cloud.beforeSave("Schedule", function(request, response) {
                     
-                    _checkLogin(request, response);
-                    
-                    var user = request.user;
-                    var userId = AV.Object.createWithoutData("_User", user.id);
-                    
-                    var schedlue = request.object;
-                    var pushDate = schedlue.get('remindDate');
-                    
-                    if (!pushDate)
-                    {
-                    response.success();
-                    }
-                    console.dir(schedlue.get('content'));
-                    createPush([userId],pushDate,schedlue.get('content'),function(push,error){
-                               
-                               if (push && !error)
-                               {
-                               //            var pushId = AV.Object.createWithoutData("_Notification", push.id);
-                               schedlue.set('pushId',push.id);
-                               response.success();
-                               }
-                               else
-                               {
-                               console.log('日程保存失败');
-                               response.error(error);
-                               }
-                               });
-                    });
+    _checkLogin(request, response);
+
+    var user = request.user;
+    var userId = AV.Object.createWithoutData("_User", user.id);
+
+    var schedlue = request.object;
+    var pushDate = schedlue.get('remindDate');
+    console.dir(schedlue.get('content'));
+    console.dir(pushDate);
+
+    createPush([userId],pushDate,schedlue.get('content'),function(push,error){
+
+               if (push && !error)
+               {
+               //            var pushId = AV.Object.createWithoutData("_Notification", push.id);
+               schedlue.set('pushId',push.id);
+               response.success();
+               }
+               else
+               {
+               console.log('日程保存失败');
+               response.error(error);
+               }
+               });
+    });
 
 //AV.Cloud.afterSave("Schedule", function(request) {
 //
