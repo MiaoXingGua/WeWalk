@@ -1,9 +1,0 @@
-<resources>
-
-    <dimen name="mainpage_schbtn_w">60dp</dimen>
-    <dimen name="actionbar_height">47dp</dimen>
-    <dimen name="slidingmenu_offset">100dp</dimen>
-    <dimen name="mainpage_model_h">350dp</dimen>
-    <dimen name="mainpage_viewpage_item_model_h">312dp</dimen>
-
-</resources>
