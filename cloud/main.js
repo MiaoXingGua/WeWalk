@@ -366,10 +366,10 @@ AV.Cloud.beforeSave("Schedule", function(request, response) {
 
     var schedlue = request.object;
     var pushDate = schedlue.get('remindDate');
-    console.dir(schedlue);
-    console.dir(pushDate);
+    console.dir(schedlue.get('text'));
+//    console.dir(pushDate);
 
-    createPush([userId],pushDate,schedlue.get('content'),function(push,error){
+    createPush([userId],pushDate,schedlue.get('text'),function(push,error){
 
                if (push && !error)
                {
