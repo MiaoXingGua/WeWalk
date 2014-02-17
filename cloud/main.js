@@ -370,8 +370,8 @@ AV.Cloud.beforeSave("Schedule", function(request, response) {
                     {
                     response.success();
                     }
-                    console.dir(schedlue);
-                    createPush([userId],pushDate,schedlue.get('content').get('text'),function(push,error){
+                    console.dir(schedlue.get('content'));
+                    createPush([userId],pushDate,schedlue.get('content'),function(push,error){
                                
                                if (push && !error)
                                {
