@@ -4,14 +4,14 @@
 var array = ['a1','2b','ccc'];
 
 AV.Cloud.define("hello", function(request, response) {
-
-  response.success("Hello world!");
-
-    for (var i in array)
-    {
-        console.log(array[i]);
-    }
-});
+                
+                response.success("Hello world!");
+                
+                for (var i in array)
+                {
+                console.log(array[i]);
+                }
+                });
 
 /****************
  通用AVObject
@@ -58,10 +58,10 @@ function _includeKeyWithPhoto(photoQuery){
 
 //comment查询
 function _includeKeyWithComment(commentQuery){
-
-        commentQuery.include("user");
-        commentQuery.include("content");
-        commentQuery.include("photo");
+    
+    commentQuery.include("user");
+    commentQuery.include("content");
+    commentQuery.include("photo");
 }
 
 //生成guid
@@ -79,7 +79,7 @@ function newGuid()
 
 //检查是否登录
 function _checkLogin(request, response){
-
+    
     if (!request.user)
     {
         response.error('请先登录');
@@ -95,20 +95,20 @@ function toDate(dateStr,formateStr,addHours){
 
 //限制返回的调试
 function limitQuery(request,query,done){
-
+    
     var lessThenDateStr = request.params.lessThenDateStr;
     var limit = request.params.limit;
-
+    
     if (lessThenDateStr)
     {
         var lessThenDate = toDate(lessThenDateStr,"YYYY-MM-DD HH:mm:ss");
         query.lessThan('createdAt',lessThenDate);
     }
-
+    
     query.limit(limit);
-
+    
     done(query);
-
+    
 }
 
 
@@ -120,149 +120,149 @@ function limitQuery(request,query,done){
 //});
 
 AV.Cloud.beforeSave("Message", function(request, response){
-
-    var toUser = request.object.get('toUser');
-    var fromUser = request.object.get('fromUser');
-
-    console.dir(toUser);
-    console.dir(fromUser);
-    console.log('id1 : '+toUser.id);
-    console.log('id2 : '+fromUser.id);
-
-    var user1;
-    var user2;
-
-    if (!toUser.id || !fromUser.id)
-    {
-        console.log("联系人id为空");
-        response.error("联系人id为空");
-    }
-
-    var User = AV.Object.extend('_User');
-    var userQ = new AV.Query(User);
-    userQ.equalTo('objectId',toUser.id);
-    userQ.first().then(function(user) {
-
-        console.log("1");
-        user1 = user;
-        var userQ = new AV.Query(User);
-        userQ.equalTo('objectId',fromUser.id);
-        return userQ.first();
-
-    }).then(function(user) {
-
-        console.log("2");
-        user2 = user;
-//        user2 = AV.Object.createWithoutData("_User", user.id);
-        user1.relation('contacts').add(user2);
-        return user1.save();
-
-    }).then(function(user) {
-
-        console.log("3");
-//        user1 =  AV.Object.createWithoutData("_User", user.id);
-        user2.relation('contacts').add(user1);
-        return user2.save();
-
-    }).then(function(user) {
-
-        console.log("4");
-        response.success();
-
-    }, function(error) {
-        console.log("5");
-        response.error(error);
-
-    });
-
-
-});
+                    
+                    var toUser = request.object.get('toUser');
+                    var fromUser = request.object.get('fromUser');
+                    
+                    console.dir(toUser);
+                    console.dir(fromUser);
+                    console.log('id1 : '+toUser.id);
+                    console.log('id2 : '+fromUser.id);
+                    
+                    var user1;
+                    var user2;
+                    
+                    if (!toUser.id || !fromUser.id)
+                    {
+                    console.log("联系人id为空");
+                    response.error("联系人id为空");
+                    }
+                    
+                    var User = AV.Object.extend('_User');
+                    var userQ = new AV.Query(User);
+                    userQ.equalTo('objectId',toUser.id);
+                    userQ.first().then(function(user) {
+                                       
+                                       console.log("1");
+                                       user1 = user;
+                                       var userQ = new AV.Query(User);
+                                       userQ.equalTo('objectId',fromUser.id);
+                                       return userQ.first();
+                                       
+                                       }).then(function(user) {
+                                               
+                                               console.log("2");
+                                               user2 = user;
+                                               //        user2 = AV.Object.createWithoutData("_User", user.id);
+                                               user1.relation('contacts').add(user2);
+                                               return user1.save();
+                                               
+                                               }).then(function(user) {
+                                                       
+                                                       console.log("3");
+                                                       //        user1 =  AV.Object.createWithoutData("_User", user.id);
+                                                       user2.relation('contacts').add(user1);
+                                                       return user2.save();
+                                                       
+                                                       }).then(function(user) {
+                                                               
+                                                               console.log("4");
+                                                               response.success();
+                                                               
+                                                               }, function(error) {
+                                                               console.log("5");
+                                                               response.error(error);
+                                                               
+                                                               });
+                    
+                    
+                    });
 
 
 function PM25() {
-
+    
     console.log('开始请求PM25');
-
+    
     AV.Cloud.httpRequest({
-        url: "http://www.pm25.in/api/querys/all_cities.json?token="+PM25AppKey,
-        success: function(httpResponse) {
-
-            console.log('请求PM25成功');
-            try {
-//                console.dir(httpResponse.text);
-                var resultInfo = JSON.parse(httpResponse.text);
-
-//                var guid = newGuid();
-
-                if (resultInfo)
-                {
-                    var aqis = new Array();
-                    console.log('获得aqi数量 ： '+resultInfo.length);
-                    for (var i in resultInfo)
-                    {
-                        var aqiInfo = resultInfo[i];
-                        if (!__production)
-                        console.dir(aqiInfo);
-                        console.dir(aqiInfo.primary_pollutant);
-
-                        var aqi = new AirQualityIndex();
-                        aqi.set('area', aqiInfo.area);
-                        aqi.set('aqi',aqiInfo.aqi);
-                        aqi.set('position_name', aqiInfo.position_name);
-                        aqi.set('station_code', aqiInfo.station_code);
-                        aqi.set('so2', aqiInfo.so2);
-                        aqi.set('so2_24h', aqiInfo.so2_24h);
-                        aqi.set('no2', aqiInfo.no2);
-                        aqi.set('no2_24h', aqiInfo.no2_24h);
-                        aqi.set('pm10', aqiInfo.pm10);
-                        aqi.set('pm10_24h', aqiInfo.pm10_24h);
-                        aqi.set('co', aqiInfo.co);
-                        aqi.set('co_24h', aqiInfo.co_24h);
-                        aqi.set('o3', aqiInfo.o3);
-                        aqi.set('o3_24h', aqiInfo.o3_24h);
-                        aqi.set('o3_8h', aqiInfo.o3_8h);
-                        aqi.set('o3_8h_24h', aqiInfo.o3_8h_24h);
-                        aqi.set('pm2_5', aqiInfo.pm2_5);
-                        aqi.set('pm2_5_24h', aqiInfo.pm2_5_24h);
-                        aqi.set('primary_pollutant', aqiInfo.primary_pollutant);
-//                        aqi.set('guid',guid);
-
-                        aqi.set('quality', aqiInfo.quality);
-//                        aqi.set('time_point', aqiInfo.time_point);
-                        aqis.push(aqi);
-                    }
-                    console.log('存入aqi数量 ： '+aqis.length);
-                    AV.Object.saveAll(aqis, function(list, error) {
-                        if (list) {
-                            // All the objects were saved.
-                            console.log('保存PM25成功');
-                            console.log('成功存入aqi数量 ： '+list.length);
-
-                        } else {
-                            // An error occurred.
-                            console.log('保存PM25失败1');
-                            console.dir(error);
-                        }
-                    });
-                }
-                else
-                {
-                    console.dir("resultInfo : "+resultInfo.result);
-                }
-            }
-            catch(error) {
-
-                console.log('保存PM25失败2');
-                console.dir(error);
-            }
-        },
-        error: function(error) {
-
-            console.log('保存PM25失败3');
-            console.dir(error);
-        }
-    });
-
+                         url: "http://www.pm25.in/api/querys/all_cities.json?token="+PM25AppKey,
+                         success: function(httpResponse) {
+                         
+                         console.log('请求PM25成功');
+                         try {
+                         //                console.dir(httpResponse.text);
+                         var resultInfo = JSON.parse(httpResponse.text);
+                         
+                         //                var guid = newGuid();
+                         
+                         if (resultInfo)
+                         {
+                         var aqis = new Array();
+                         console.log('获得aqi数量 ： '+resultInfo.length);
+                         for (var i in resultInfo)
+                         {
+                         var aqiInfo = resultInfo[i];
+                         //                        if (!__production)
+                         //                        console.dir(aqiInfo);
+                         //                        console.dir(aqiInfo.primary_pollutant);
+                         
+                         var aqi = new AirQualityIndex();
+                         aqi.set('area', aqiInfo.area);
+                         aqi.set('aqi',aqiInfo.aqi);
+                         aqi.set('position_name', aqiInfo.position_name);
+                         aqi.set('station_code', aqiInfo.station_code);
+                         aqi.set('so2', aqiInfo.so2);
+                         aqi.set('so2_24h', aqiInfo.so2_24h);
+                         aqi.set('no2', aqiInfo.no2);
+                         aqi.set('no2_24h', aqiInfo.no2_24h);
+                         aqi.set('pm10', aqiInfo.pm10);
+                         aqi.set('pm10_24h', aqiInfo.pm10_24h);
+                         aqi.set('co', aqiInfo.co);
+                         aqi.set('co_24h', aqiInfo.co_24h);
+                         aqi.set('o3', aqiInfo.o3);
+                         aqi.set('o3_24h', aqiInfo.o3_24h);
+                         aqi.set('o3_8h', aqiInfo.o3_8h);
+                         aqi.set('o3_8h_24h', aqiInfo.o3_8h_24h);
+                         aqi.set('pm2_5', aqiInfo.pm2_5);
+                         aqi.set('pm2_5_24h', aqiInfo.pm2_5_24h);
+                         aqi.set('primary_pollutant', aqiInfo.primary_pollutant);
+                         //                        aqi.set('guid',guid);
+                         
+                         aqi.set('quality', aqiInfo.quality);
+                         //                        aqi.set('time_point', aqiInfo.time_point);
+                         aqis.push(aqi);
+                         }
+                         console.log('存入aqi数量 ： '+aqis.length);
+                         AV.Object.saveAll(aqis, function(list, error) {
+                                           if (list) {
+                                           // All the objects were saved.
+                                           console.log('保存PM25成功');
+                                           //                            console.log('成功存入aqi数量 ： '+list.length);
+                                           
+                                           } else {
+                                           // An error occurred.
+                                           console.log('保存PM25失败1');
+                                           console.dir(error);
+                                           }
+                                           });
+                         }
+                         else
+                         {
+                         console.dir("resultInfo : "+resultInfo.result);
+                         }
+                         }
+                         catch(error) {
+                         
+                         console.log('保存PM25失败2');
+                         console.dir(error);
+                         }
+                         },
+                         error: function(error) {
+                         
+                         console.log('保存PM25失败3');
+                         console.dir(error);
+                         }
+                         });
+    
 }
 
 if (__production)
@@ -274,118 +274,118 @@ else
     AV.Cloud.define("PM25_define", PM25);
 }
 
-
 //创建通知
 function createPush(users,pushDate,alert,done){
-
+    
     console.log("开始创建通知");
     //创建通知
     var installationQuery = new AV.Query(Installation);
-//    var user = AV.Object.createWithoutData("_User", '52d4e3a7e4b0b492ca548e1b');
+    //    var user = AV.Object.createWithoutData("_User", '52d4e3a7e4b0b492ca548e1b');
     installationQuery.containedIn('user',users);
-
+    
     var guid = newGuid();
-
+    
     if (!(pushDate && alert && users[0].id && guid))
     {
-       console.log('创建通知参数错误');
+        console.log('创建通知参数错误');
+        
         done(null,'创建通知参数错');
     }
-
-//    console.dir(pushDate);
-//    console.dir(alert);
-//    console.dir(users);
-//    console.dir(guid);
-
+    
+    //    console.dir(pushDate);
+    //    console.dir(alert);
+    //    console.dir(users);
+    //    console.dir(guid);
+    
     AV.Push.send({
-        where: installationQuery,
-        data: {
-            alert:alert
-        },
-        push_time:pushDate,
-        guid:guid
-
-    }).then(function() {
-
-        console.log("开始获取通知");
-        //获取通知
-        var pushQ = new AV.Query(Notification);
-        pushQ.equalTo('guid',guid);
-        pushQ.first().then(function(push) {
-
-            if (push)
-            {
-                console.log('push查询成功 : '+push.id);
-                var pushId = AV.Object.createWithoutData("_Notification", push.id);
-                done(pushId,null);
-            }
-            else
-            {
-                console.log('push查询失败');
-                done(null,'push查询失败');
-            }
-
-        }, function(error) {
-
-            done(null,error);
-
-        });
-
-        }, function(error) {
-
-            done(null,error);
-    });
+                 where: installationQuery,
+                 data: {
+                 alert:alert
+                 },
+                 push_time:pushDate,
+                 guid:guid
+                 
+                 }).then(function() {
+                         
+                         console.log("开始获取通知");
+                         //获取通知
+                         var pushQ = new AV.Query(Notification);
+                         pushQ.equalTo('guid',guid);
+                         pushQ.first().then(function(push) {
+                                            
+                                            if (push)
+                                            {
+                                            console.log('push查询成功 : '+push.id);
+                                            var pushId = AV.Object.createWithoutData("_Notification", push.id);
+                                            done(pushId,null);
+                                            }
+                                            else
+                                            {
+                                            console.log('push查询失败');
+                                            done(null,'push查询失败');
+                                            }
+                                            
+                                            }, function(error) {
+                                            
+                                            done(null,error);
+                                            
+                                            });
+                         
+                         }, function(error) {
+                         
+                         done(null,error);
+                         });
 }
 
 //删除通知
 function deletePush(push,done){
-
-//    var pushId = AV.Object.createWithoutData("_Notification", push.id);
+    
+    //    var pushId = AV.Object.createWithoutData("_Notification", push.id);
     push.destroy().then(function() {
-
-        console.log('删除成功');
-        done(null);
-
-    }, function(error) {
-
-        console.log('删除失败');
-        done(error);
-    });
-
+                        
+                        console.log('删除成功');
+                        done(null);
+                        
+                        }, function(error) {
+                        
+                        console.log('删除失败');
+                        done(error);
+                        });
+    
 }
 
 
 //保存日程之前（创建推送通知）
 AV.Cloud.beforeSave("Schedule", function(request, response) {
-
-    _checkLogin(request, response);
-
-    var user = request.user;
-    var userId = AV.Object.createWithoutData("_User", user.id);
-
-    var schedlue = request.object;
-    var pushDate = schedlue.get('remindDate');
-
-    if (!pushDate)
-    {
-        response.success();
-    }
-
-    createPush([userId],pushDate,pushDate,schedlue.get('content').get('text'),function(push,error){
-
-        if (push && !error)
-        {
-//            var pushId = AV.Object.createWithoutData("_Notification", push.id);
-            schedlue.set('pushId',push.id);
-            response.success();
-        }
-        else
-        {
-            console.log('日程保存失败');
-            response.error(error);
-        }
-    });
-});
+                    
+                    _checkLogin(request, response);
+                    
+                    var user = request.user;
+                    var userId = AV.Object.createWithoutData("_User", user.id);
+                    
+                    var schedlue = request.object;
+                    var pushDate = schedlue.get('remindDate');
+                    
+                    if (!pushDate)
+                    {
+                    response.success();
+                    }
+                    console.dir(schedlue);
+                    createPush([userId],pushDate,schedlue.get('content').get('text'),function(push,error){
+                               
+                               if (push && !error)
+                               {
+                               //            var pushId = AV.Object.createWithoutData("_Notification", push.id);
+                               schedlue.set('pushId',push.id);
+                               response.success();
+                               }
+                               else
+                               {
+                               console.log('日程保存失败');
+                               response.error(error);
+                               }
+                               });
+                    });
 
 //AV.Cloud.afterSave("Schedule", function(request) {
 //
@@ -397,25 +397,25 @@ AV.Cloud.beforeSave("Schedule", function(request, response) {
 
 //删除日程之前(删除推送通知)
 AV.Cloud.beforeDelete("Schedule", function(request, response) {
-
-    _checkLogin(request, response);
-//    var user = request.user;
-//    var userId = AV.Object.createWithoutData("_User", user.id);
-    var schedlue = request.object;
-    var pushId = AV.Object.createWithoutData("_Notification", schedlue.get('pushId'));
-
-    deletePush(pushId,function(error){
-
-        if (!error)
-        {
-            response.success();
-        }
-        else
-        {
-            response.error(error);
-        }
-    });
-});
+                      
+                      _checkLogin(request, response);
+                      //    var user = request.user;
+                      //    var userId = AV.Object.createWithoutData("_User", user.id);
+                      var schedlue = request.object;
+                      var pushId = AV.Object.createWithoutData("_Notification", schedlue.get('pushId'));
+                      
+                      deletePush(pushId,function(error){
+                                 
+                                 if (!error)
+                                 {
+                                 response.success();
+                                 }
+                                 else
+                                 {
+                                 response.error(error);
+                                 }
+                                 });
+                      });
 
 //AV.Cloud.afterDelete("Schedule", function(request) {
 //
@@ -423,88 +423,87 @@ AV.Cloud.beforeDelete("Schedule", function(request, response) {
 
 //创建通知
 AV.Cloud.define("created_push", function(request, response){
-
-    _checkLogin(request, response);
-
-    var userId = AV.Object.createWithoutData("_User", request.user.id);
-
-    var remindDateStr = request.params.remindDateStr;
-
-    var alert = request.params.alert;
-
-    if (!(remindDateStr && alert))
-    {
-        response.error('参数错误');
-    }
-
-    var push_time = toDate(remindDateStr);
-
-    createdPush([userId],push_time,alert,function(push,error){
-
-        if (push && !error)
-        {
-//            var pushId = AV.Object.createWithoutData("_Notification", push.id);
-
-            response.success(push.id);
-        }
-        else
-        {
-            response.error(error);
-        }
-    });
-});
+                
+                _checkLogin(request, response);
+                
+                var userId = AV.Object.createWithoutData("_User", request.user.id);
+                
+                var remindDateStr = request.params.remindDateStr;
+                
+                var alert = request.params.alert;
+                
+                if (!(remindDateStr && alert))
+                {
+                response.error('参数错误');
+                }
+                
+                var push_time = toDate(remindDateStr);
+                
+                createdPush([userId],push_time,alert,function(push,error){
+                            
+                            if (push && !error)
+                            {
+                            //            var pushId = AV.Object.createWithoutData("_Notification", push.id);
+                            response.success(push.id);
+                            }
+                            else
+                            {
+                            response.error(error);
+                            }
+                            });
+                });
 
 //删除通知
 AV.Cloud.define("delete_push", function(request, response){
-
-    _checkLogin(request, response);
-
-    var pushId = request.params.pushId;
-
-    if (!pushId)
-    {
-        response.error('参数错误');
-    }
-
-    var pushid = AV.Object.createWithoutData("_Notification", pushId);
-
-    deletePush(pushid,function(error){
-        if (!error)
-        {
-            console.log('删除成功1');
-            response.success('成功');
-        }
-        else
-        {
-            response.error(error);
-        }
-
-    });
-
-
-//    pushid.destroy().then(function() {
-//
-//        console.log('删除成功1');
-//        response.success('成功');
-//
-//    }, function(error) {
-//
-//        response.error(error);
-//
-//    });
-
-});
+                
+                _checkLogin(request, response);
+                
+                var pushId = request.params.pushId;
+                
+                if (!pushId)
+                {
+                response.error('参数错误');
+                }
+                
+                var pushid = AV.Object.createWithoutData("_Notification", pushId);
+                
+                deletePush(pushid,function(error){
+                           if (!error)
+                           {
+                           console.log('删除成功1');
+                           response.success('成功');
+                           }
+                           else
+                           {
+                           response.error(error);
+                           }
+                           
+                           });
+                
+                
+                //    pushid.destroy().then(function() {
+                //
+                //        console.log('删除成功1');
+                //        response.success('成功');
+                //
+                //    }, function(error) {
+                //
+                //        response.error(error);
+                //
+                //    });
+                
+                });
 
 /****************
  天气
  *****************/
 AV.Cloud.define("datetime", function(request, response) {
-
-//    var timestamp = Date.parse(new Date());
-    var timestamp = new Date().getTime();
-//    console.log(timestamp);
-    response.success(timestamp);
-});
+                
+                //    var timestamp = Date.parse(new Date());
+                var timestamp = new Date().getTime();
+                //    console.log(timestamp);
+                response.success(timestamp);
+                });
 
 //var yahooCityNameToWoeidAPI = "http://query.yahooapis.com/v1/public/yql?q=select%20woeid,name,country%20from%20geo.places%20where%20text=";
 //AV.Cloud.define("get_woeid_from_city_name", function(request, response) {
