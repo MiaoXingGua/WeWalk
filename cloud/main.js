@@ -302,7 +302,8 @@ function createPush(users,pushDate,alert,done){
                  where: installationQuery,
                  data: {
                      type:3,
-                     alert:alert
+                     alert:alert,
+                     sound:"sqy.mp3"
                  },
 
                  push_time:pushDate,
