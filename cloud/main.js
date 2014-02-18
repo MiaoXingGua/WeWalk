@@ -303,6 +303,7 @@ function createPush(users,pushDate,alert,done){
                  data: {
                  alert:alert
                  },
+                type:3,
                  push_time:pushDate,
                  guid:guid
                  
