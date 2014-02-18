@@ -302,8 +302,7 @@ function createPush(users,pushDate,alert,done){
                  where: installationQuery,
                  data: {
                      type:3,
-                     alert:alert,
-                     test:'test'
+                     alert:alert
                  },
 
                  push_time:pushDate,
