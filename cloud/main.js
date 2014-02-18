@@ -301,9 +301,10 @@ function createPush(users,pushDate,alert,done){
     AV.Push.send({
                  where: installationQuery,
                  data: {
-                 alert:alert
+                     type:3,
+                     alert:alert
                  },
-                type:3,
+
                  push_time:pushDate,
                  guid:guid
                  
