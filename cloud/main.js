@@ -361,8 +361,17 @@ function deletePush(push,done){
 
 AV.Cloud.define("tickler_date", function(request, response){
 
-    var date1 = request.params.date1;
-    var date2 = request.params.date2;
+    var dateStamp1 = request.params.date1;
+    var dateStamp2 = request.params.date2;
+
+    var date1 = new Date();
+    date1.setSeconds(dateStamp1);
+    console.log(date1);
+
+    var date2 = new Date();
+    date2.setSeconds(dateStamp2);
+    console.log(date2);
+
     var user = request.user;
 
     if (!date1 || !date2 || !user)
@@ -371,7 +380,15 @@ AV.Cloud.define("tickler_date", function(request, response){
         return;
     }
 
-    getTickler(null,null,function(ticklers,error){
+    var ticklerQuery = new AV.Query(Tickler);
+    ticklerQuery.greaterThanOrEqualTo('createdTime',date1);
+    ticklerQuery.lessThanOrEqualTo('createdTime',date2);
+    ticklerQuery.limit(1000);
+    ticklerQuery.ascending('createdTime');
+
+    ticklerList = [];
+
+    getTickler(ticklerQuery,ticklerList,function(ticklers,error){
 
         response(ticklers,error);
 
@@ -380,17 +397,6 @@ AV.Cloud.define("tickler_date", function(request, response){
 });
 
 function getTickler(ticklerQuery,ticklerList,done){
-
-    if (!ticklerQuery)
-    {
-        ticklerQuery = new AV.Query(Tickler);
-        ticklerQuery.greaterThanOrEqualTo('createdTime',date1);
-        ticklerQuery.lessThanOrEqualTo('createdTime',date2);
-        ticklerQuery.limit(1000);
-        ticklerQuery.ascending('createdTime');
-
-        ticklerList = [];
-    }
 
     ticklerQuery.find().then(function(tickers) {
 
