@@ -29,6 +29,7 @@ var Content = AV.Object.extend('Content');
 var Brand = AV.Object.extend('Brand');
 var Temperature = AV.Object.extend('Temperature');
 var WeatherType = AV.Object.extend('WeatherType');
+var Tickler = AV.Object.extend('Tickler');
 
 var Notification = AV.Object.extend('_Notification');
 
@@ -356,6 +357,64 @@ function deletePush(push,done){
                         done(error);
                         });
     
+}
+
+AV.Cloud.define("tickler_date", function(request, response){
+
+    var date1 = request.params.date1;
+    var date2 = request.params.date2;
+    var user = request.user;
+
+    if (!date1 || !date2 || !user)
+    {
+        response("参数错误");
+        return;
+    }
+
+    getTickler(null,null,function(ticklers,error){
+
+        response(ticklers,error);
+
+    });
+
+});
+
+function getTickler(ticklerQuery,ticklerList,done){
+
+    if (!ticklerQuery)
+    {
+        ticklerQuery = new AV.Query(Tickler);
+        ticklerQuery.greaterThanOrEqualTo('createdTime',date1);
+        ticklerQuery.lessThanOrEqualTo('createdTime',date2);
+        ticklerQuery.limit(1000);
+        ticklerQuery.ascending('createdTime');
+
+        ticklerList = [];
+    }
+
+    ticklerQuery.find().then(function(tickers) {
+
+        for (var i in tickers)
+        {
+            ticklerList.push({"objectId":tickers[i].id,"createdTime":tickers[i].get('createdTime')});
+        }
+
+        if (tickers.length<1000)
+        {
+            done(ticklerList,null);
+        }
+        else
+        {
+            ticklerQuery.skip+=1000;
+            getTickler(ticklerQuery,ticklerList,done);
+        }
+
+
+    }, function(error) {
+
+        done(ticklerList,error);
+
+    });
 }
 
 
