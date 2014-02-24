@@ -365,11 +365,11 @@ AV.Cloud.define("tickler_date", function(request, response){
     var dateStamp2 = request.params.date2;
 
     var date1 = new Date();
-    date1.setSeconds(dateStamp1);
+    date1.setMilliseconds(dateStamp1);
     console.log(date1);
 
     var date2 = new Date();
-    date2.setSeconds(dateStamp2);
+    date2.setMilliseconds(dateStamp2);
     console.log(date2);
 
     var user = request.user;
