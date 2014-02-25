@@ -95,7 +95,10 @@ function toDate(dateStr,formateStr,addHours){
 }
 
 function getDate(datestamp) {
-    return new Date(parseInt(datestamp * 1000) );//.toLocaleString().replace(/:\d{1,2}$/,' ');
+    console.log('stamp : '+datestamp);
+    var date = new Date(parseInt(datestamp * 1000))
+    console.log('date : '+date);
+    return date;//.toLocaleString().replace(/:\d{1,2}$/,' ');
 }
 
 //限制返回的调试
