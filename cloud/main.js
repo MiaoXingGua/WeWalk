@@ -366,11 +366,11 @@ AV.Cloud.define("tickler_date", function(request, response){
 
     var date1 = new Date();
     date1.setMilliseconds(dateStamp1);
-    console.log(date1);
+    console.log('date1'+date1);
 
     var date2 = new Date();
     date2.setMilliseconds(dateStamp2);
-    console.log(date2);
+    console.log('date2'+date2);
 
     var user = request.user;
 
@@ -398,11 +398,15 @@ AV.Cloud.define("tickler_date", function(request, response){
 
 function getTickler(ticklerQuery,ticklerList,done){
 
+    console.log("开始查询");
     ticklerQuery.find().then(function(tickers) {
 
+        console.log("查询到 : "+tickers.length);
         for (var i in tickers)
         {
-            ticklerList.push({"objectId":tickers[i].id,"createdTime":tickers[i].get('createdTime')});
+            var dic = {"objectId":tickers[i].id,"createdTime":tickers[i].get('createdTime')};
+            console.dic(dic);
+            ticklerList.push(dic);
         }
 
         if (tickers.length<1000)
