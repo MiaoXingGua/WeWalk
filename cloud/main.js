@@ -95,7 +95,7 @@ function toDate(dateStr,formateStr,addHours){
 }
 
 function getDate(datestamp) {
-    return new Date(parseInt(datestamp) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');
+    return new Date(parseInt(datestamp) * 1000);//.toLocaleString().replace(/:\d{1,2}$/,' ');
 }
 
 //限制返回的调试
@@ -113,7 +113,6 @@ function limitQuery(request,query,done){
     query.limit(limit);
     
     done(query);
-    
 }
 
 
