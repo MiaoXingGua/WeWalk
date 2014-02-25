@@ -95,7 +95,7 @@ function toDate(dateStr,formateStr,addHours){
 }
 
 function getDate(datestamp) {
-    return new Date(parseInt(datestamp) * 1000);//.toLocaleString().replace(/:\d{1,2}$/,' ');
+    return new Date(parseInt(datestamp * 1000) );//.toLocaleString().replace(/:\d{1,2}$/,' ');
 }
 
 //限制返回的调试
@@ -369,10 +369,12 @@ AV.Cloud.define("tickler_date", function(request, response){
 
     var date1 = getDate(dateStamp1);
 //    date1.setMilliseconds(dateStamp1);
+    console.log('date1'+dateStamp1);
     console.log('date1'+date1);
 
     var date2 = getDate(dateStamp2);
 //    date2.setMilliseconds(dateStamp2);
+    console.log('date2'+dateStamp2);
     console.log('date2'+date2);
 
     var user = request.user;
