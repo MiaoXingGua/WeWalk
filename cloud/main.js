@@ -369,14 +369,14 @@ AV.Cloud.define("tickler_date", function(request, response){
 
     var dateStamp1 = request.params.date1;
     var dateStamp2 = request.params.date2;
-    console.log('date1 : '+dateStamp1);
+    console.log('stamp1 : '+dateStamp1);
 
-    console.log('date2 : '+dateStamp2);
+    console.log('stamp2 : '+dateStamp2);
 
-    var date1 = getDate(dateStamp1);
+    var date1 = getDate(1393216000);
     console.log('date1 : '+date1);
 
-    var date2 = getDate(dateStamp2);
+    var date2 = getDate(1393416000);
     console.log('date2 : '+date2);
 
     var user = request.user;
@@ -407,6 +407,12 @@ function getTickler(ticklerQuery,ticklerList,done){
 
     console.log("开始查询");
     ticklerQuery.find().then(function(tickers) {
+
+        if (tickers.length)
+        {
+            done(ticklerList,null);
+        }
+
 
         console.log("查询到 : "+tickers.length);
         for (var i in tickers)
