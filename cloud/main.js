@@ -95,9 +95,9 @@ function toDate(dateStr,formateStr,addHours){
 }
 
 function getDate(datestamp) {
-    console.log('stamp : '+datestamp);
-    var date = new Date(parseInt(datestamp * 1000))
-    console.log('date : '+date);
+//    console.log('stamp : '+datestamp);
+    var date = new Date(parseInt(datestamp * 1000));
+//    console.log('date : '+date);
     return date;//.toLocaleString().replace(/:\d{1,2}$/,' ');
 }
 
@@ -369,16 +369,15 @@ AV.Cloud.define("tickler_date", function(request, response){
 
     var dateStamp1 = request.params.date1;
     var dateStamp2 = request.params.date2;
+    console.log('date1 : '+dateStamp1);
+
+    console.log('date2 : '+dateStamp2);
 
     var date1 = getDate(dateStamp1);
-//    date1.setMilliseconds(dateStamp1);
-    console.log('date1'+dateStamp1);
-    console.log('date1'+date1);
+    console.log('date1 : '+date1);
 
     var date2 = getDate(dateStamp2);
-//    date2.setMilliseconds(dateStamp2);
-    console.log('date2'+dateStamp2);
-    console.log('date2'+date2);
+    console.log('date2 : '+date2);
 
     var user = request.user;
 
