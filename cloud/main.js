@@ -397,6 +397,7 @@ AV.Cloud.define("tickler_date", function(request, response){
 
     getTickler(ticklerQuery,ticklerList,function(ticklers,error){
 
+        console.log("回调 : "+ticklers.length);
         response(ticklers,error);
 
     });
@@ -406,9 +407,9 @@ AV.Cloud.define("tickler_date", function(request, response){
 function getTickler(ticklerQuery,ticklerList,done){
 
     console.log("开始查询");
-    ticklerQuery.find().then(function(tickers) {
+    ticklerQuery.find().then(function(ticklers) {
 
-        if (tickers.length)
+        if (ticklers.length==0)
         {
             done(ticklerList,null);
         }
@@ -435,6 +436,7 @@ function getTickler(ticklerQuery,ticklerList,done){
 
     }, function(error) {
 
+        console.log("查询失败1 : "+tickers.length);
         done(ticklerList,error);
 
     });
