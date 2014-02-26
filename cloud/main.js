@@ -415,15 +415,15 @@ function getTickler(ticklerQuery,ticklerList,done){
         }
 
 
-        console.log("查询到 : "+tickers.length);
-        for (var i in tickers)
+        console.log("查询到 : "+ticklers.length);
+        for (var i in ticklers)
         {
-            var dic = {"objectId":tickers[i].id,"createdTime":tickers[i].get('createdTime')};
+            var dic = {"objectId":ticklers[i].id,"createdTime":ticklers[i].get('createdTime')};
             console.dic(dic);
             ticklerList.push(dic);
         }
 
-        if (tickers.length<1000)
+        if (ticklers.length<1000)
         {
             done(ticklerList,null);
         }
@@ -436,7 +436,7 @@ function getTickler(ticklerQuery,ticklerList,done){
 
     }, function(error) {
 
-        console.log("查询失败1 : "+tickers.length);
+        console.log("查询失败1 : "+ticklers.length);
         done(ticklerList,error);
 
     });
