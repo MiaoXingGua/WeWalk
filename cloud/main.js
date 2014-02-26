@@ -393,7 +393,7 @@ AV.Cloud.define("tickler_date", function(request, response){
     ticklerQuery.limit(1000);
     ticklerQuery.ascending('createdTime');
 
-    ticklerList = [];
+    ticklerList = new Array();
 
     getTickler(ticklerQuery,ticklerList,function(ticklers,error){
 
@@ -408,7 +408,7 @@ function getTickler(ticklerQuery,ticklerList,done){
 
     if (!ticklerList)
     {
-        ticklerList = [];
+        ticklerList = new Array();
     }
 
     console.log("开始查询");
