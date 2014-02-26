@@ -406,6 +406,11 @@ AV.Cloud.define("tickler_date", function(request, response){
 
 function getTickler(ticklerQuery,ticklerList,done){
 
+    if (!ticklerList)
+    {
+        ticklerList = [];
+    }
+
     console.log("开始查询");
     ticklerQuery.find().then(function(ticklers) {
 
@@ -418,7 +423,7 @@ function getTickler(ticklerQuery,ticklerList,done){
         for (var i in ticklers)
         {
             var dict = {"objectId":ticklers[i].id,"createdTime":ticklers[i].get('createdTime')};
-//            console.dic(dict);
+            console.dic(dict);
             ticklerList.push(dict);
 //            ticklerList.push({"objectId":ticklers[i].id,"createdTime":ticklers[i].get('createdTime')});
         }
