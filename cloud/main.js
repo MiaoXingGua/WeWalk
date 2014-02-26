@@ -414,13 +414,13 @@ function getTickler(ticklerQuery,ticklerList,done){
             done(ticklerList,null);
         }
 
-
         console.log("查询到 : "+ticklers.length);
         for (var i in ticklers)
         {
-            var dic = {"objectId":ticklers[i].id,"createdTime":ticklers[i].get('createdTime')};
-            console.dic(dic);
-            ticklerList.push(dic);
+            var dict = {"objectId":ticklers[i].id,"createdTime":ticklers[i].get('createdTime')};
+//            console.dic(dict);
+            ticklerList.push(dict);
+//            ticklerList.push({"objectId":ticklers[i].id,"createdTime":ticklers[i].get('createdTime')});
         }
 
         if (ticklers.length<1000)
