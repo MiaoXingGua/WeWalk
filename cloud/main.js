@@ -429,9 +429,9 @@ function getTickler(ticklerQuery,ticklerList,done){
         console.log("查询到 : "+ticklers.length);
         for (var i in ticklers)
         {
-            var dict = {"objectId":ticklers[i].id,"createdTime":ticklers[i].get('createdTime')};
-            console.dir(dict);
-            ticklerList.push(dict);
+//            var dict = {"objectId":ticklers[i].id,"createdTime":ticklers[i].get('createdTime')};
+//            console.dir(dict);
+            ticklerList.push(ticklers[i].id);
 //            ticklerList.push({"objectId":ticklers[i].id,"createdTime":ticklers[i].get('createdTime')});
         }
 
