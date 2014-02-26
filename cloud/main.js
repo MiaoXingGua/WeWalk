@@ -5,13 +5,19 @@ var array = ['a1','2b','ccc'];
 
 AV.Cloud.define("hello", function(request, response) {
                 
-                response.success("Hello world!");
-                
-                for (var i in array)
-                {
-                console.log(array[i]);
-                }
-                });
+    response.success("Hello world!");
+
+    for (var i in array)
+    {
+    console.log(array[i]);
+    }
+
+    var date1 = new Date(parseInt(1393216000 * 1000));
+    console.log('date1 : '+date1);
+
+    var date2 = new Date(parseInt(1393416000 * 1000));
+    console.log('date2 : '+date2);
+});
 
 /****************
  通用AVObject
