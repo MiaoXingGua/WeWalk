@@ -398,7 +398,14 @@ AV.Cloud.define("tickler_date", function(request, response){
     getTickler(ticklerQuery,ticklerList,function(ticklers,error){
 
         console.log("回调 : "+ticklers.length);
-        response(ticklers,error);
+        if (error)
+        {
+            response.error(ticklers,error);
+        }
+        else
+        {
+            response.success(ticklers,error);
+        }
 
     });
 
