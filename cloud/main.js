@@ -423,7 +423,7 @@ function getTickler(ticklerQuery,ticklerList,done){
         for (var i in ticklers)
         {
             var dict = {"objectId":ticklers[i].id,"createdTime":ticklers[i].get('createdTime')};
-            console.dict(dict);
+            console.dir(dict);
             ticklerList.push(dict);
 //            ticklerList.push({"objectId":ticklers[i].id,"createdTime":ticklers[i].get('createdTime')});
         }
