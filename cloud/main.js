@@ -388,8 +388,8 @@ AV.Cloud.define("tickler_date", function(request, response){
     }
 
     var ticklerQuery = new AV.Query(Tickler);
-    ticklerQuery.greaterThanOrEqualTo('createdTime',date1);
-    ticklerQuery.lessThanOrEqualTo('createdTime',date2);
+    ticklerQuery.greaterThanOrEqualTo('remindTime',date1);
+    ticklerQuery.lessThanOrEqualTo('remindTime',date2);
     ticklerQuery.limit(1000);
     ticklerQuery.ascending('createdTime');
 
