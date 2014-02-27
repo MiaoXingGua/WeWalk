@@ -205,6 +205,7 @@ function PM25() {
                          if (resultInfo)
                          {
                          var aqis = new Array();
+
                          console.log('获得aqi数量 ： '+resultInfo.length);
                          for (var i in resultInfo)
                          {
@@ -273,14 +274,14 @@ function PM25() {
     
 }
 
-//if (__production)
-//{
-//    AV.Cloud.setInterval('PM25_timer', 60*20, PM25);
-//}
-//else
-//{
-//    AV.Cloud.define("PM25_define", PM25);
-//}
+if (__production)
+{
+    AV.Cloud.setInterval('PM25_timer', 60*20, PM25);
+}
+else
+{
+    AV.Cloud.define("PM25_define", PM25);
+}
 
 //创建通知
 function createPush(users,pushDate,alert,done){
