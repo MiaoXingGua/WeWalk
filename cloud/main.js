@@ -392,6 +392,7 @@ AV.Cloud.define("tickler_date", function(request, response){
     ticklerQuery.greaterThanOrEqualTo('remindTime',date1);
     ticklerQuery.lessThanOrEqualTo('remindTime',date2);
     ticklerQuery.limit(1000);
+    ticklerQuery.equalTo('user',user);
     ticklerQuery.ascending('createdTime');
 
     ticklerList = new Array();
