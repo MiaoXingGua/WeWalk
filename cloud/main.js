@@ -384,7 +384,7 @@ AV.Cloud.define("tickler_date", function(request, response){
 
     if (!date1 || !date2 || !user)
     {
-        response("参数错误");
+        response.error("参数错误");
         return;
     }
 
