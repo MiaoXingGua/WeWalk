@@ -375,10 +375,10 @@ AV.Cloud.define("tickler_date", function(request, response){
 //    console.log('stamp2 : '+dateStamp2);
 
     var date1 = new Date(parseInt(dateStamp1 * 1000));
-    console.log('date1 : '+date1);
+//    console.log('date1 : '+date1);
 
     var date2 = new Date(parseInt(dateStamp2 * 1000));
-    console.log('date2 : '+date2);
+//    console.log('date2 : '+date2);
 
     var user = request.user;
 
