@@ -120,6 +120,20 @@ function limitQuery(request,query,done){
 }
 
 
+AV.Cloud.define("getRequest",function(request, response) {
+    var url = request.params.url;
+    AV.Cloud.httpRequest({
+        url: url,
+        success: function(httpResponse) {
+            response.success(httpResponse.text);
+        },
+        error: function(httpResponse) {
+            response.error('Request failed with response code ' + httpResponse.status);
+        }
+    });
+
+});
+
 //AV.Cloud.define("toDate", function(request, response) {
 //
 ////    console.log(toDate("2014-01-21T10:00:00Z","yyyy-MM-dd'T'HH:mm:ssZ",0));
