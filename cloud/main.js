@@ -131,7 +131,6 @@ AV.Cloud.define("getRequest",function(request, response) {
             response.error('Request failed with response code ' + httpResponse.status);
         }
     });
-
 });
 
 //AV.Cloud.define("toDate", function(request, response) {
@@ -140,6 +139,35 @@ AV.Cloud.define("getRequest",function(request, response) {
 //                console.log(moment("2014-01-21T10:00:00Z","yyyy-MM-dd'T'HH:mm:ss'Z'").toDate());
 //
 //});
+
+AV.Cloud.beforeSave("Photo", function(request, response){
+
+    var type = request.object.get('type');
+    var isOfficial = request.object.get('isOfficial');
+
+    if (type==0)
+    {
+         if (isOfficial)
+         {
+             request.object.set("type",1);
+             console.log("成功设置一张官方图");
+         }
+         else
+         {
+             request.object.set("type",2);
+             console.log("成功设置一张街拍图");
+         }
+    }
+    else if (type == 11)
+    {
+        console.log("成功设置一张焦点图图");
+    }
+    else
+    {
+        console.log("图类型无法识别？ type: "+ type + "isOfficial: " + isOfficial);
+    }
+    response.success();
+});
 
 AV.Cloud.beforeSave("Message", function(request, response){
 
