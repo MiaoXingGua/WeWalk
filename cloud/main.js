@@ -142,7 +142,7 @@ AV.Cloud.define("getRequest",function(request, response) {
 
 AV.Cloud.beforeSave("Photo", function(request, response){
 
-    cosole.dir(request.object);
+    console.dir(request.object);
 
     var type = request.object.get('type');
     var isOfficial = request.object.get('isOfficial');
