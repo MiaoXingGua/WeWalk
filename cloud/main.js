@@ -142,7 +142,7 @@ AV.Cloud.define("getRequest",function(request, response) {
 
 AV.Cloud.beforeSave("Photo", function(request, response){
 
-    console.dir(request.object);
+//    console.dir(request.object);
 
     var type = request.object.get('type');
     var isOfficial = request.object.get('isOfficial');
@@ -152,17 +152,17 @@ AV.Cloud.beforeSave("Photo", function(request, response){
          if (isOfficial)
          {
              request.object.set("type",1);
-             console.log("成功设置一张官方图");
+//             console.log("成功设置一张官方图");
          }
          else
          {
              request.object.set("type",2);
-             console.log("成功设置一张街拍图");
+//             console.log("成功设置一张街拍图");
          }
     }
     else if (type == 11)
     {
-        console.log("成功设置一张焦点图图");
+//        console.log("成功设置一张焦点图图");
     }
     else
     {
