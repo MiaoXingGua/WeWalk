@@ -147,7 +147,7 @@ AV.Cloud.beforeSave("Photo", function(request, response){
     var type = request.object.get('type');
     var isOfficial = request.object.get('isOfficial');
 
-    if (type==0)
+    if (!type)
     {
          if (isOfficial)
          {
