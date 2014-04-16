@@ -164,17 +164,21 @@ AV.Cloud.beforeSave("Photo", function(request, response){
              request.object.set("type",2);
 //             console.log("成功设置一张街拍图");
          }
+        response.success();
     }
     else if (type == 11)
     {
         request.object.set("isOfficial",true);
+        response.success();
 //        console.log("成功设置一张焦点图图");
     }
     else
     {
         console.log("图类型无法识别？ type: "+ type + "isOfficial: " + isOfficial);
+        response.error();
+
     }
-    response.success();
+
 });
 
 AV.Cloud.beforeSave("Message", function(request, response){
