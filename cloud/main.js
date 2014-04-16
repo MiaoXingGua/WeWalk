@@ -166,6 +166,14 @@ AV.Cloud.beforeSave("Photo", function(request, response){
          }
         response.success();
     }
+    else if (type == 1)
+    {
+        response.success();
+    }
+    else if (type == 2)
+    {
+        response.success();
+    }
     else if (type == 11)
     {
         request.object.set("isOfficial",true);
@@ -176,9 +184,7 @@ AV.Cloud.beforeSave("Photo", function(request, response){
     {
         console.log("图类型无法识别？ type: "+ type + "isOfficial: " + isOfficial);
         response.error();
-
     }
-
 });
 
 AV.Cloud.beforeSave("Message", function(request, response){
