@@ -147,13 +147,13 @@ AV.Cloud.beforeSave("Photo", function(request, response){
     var type = request.object.get('type');
     var isOfficial = request.object.get('isOfficial');
     request.object.set('hot',0);
-
+//    request.object.set('isHidden',false);
     if (!type)
     {
         //老版
         var url = request.object.get("originalURL");
-        request.object.set("originalURL",url+"?imageMogr/auto-orient/");
-        request.object.set("thumbnailURL",url+"?imageMogr/auto-orient/thumbnail/400x");
+        request.object.set("originalURL",url+"?imageMogr2/auto-orient/");
+        request.object.set("thumbnailURL",url+"?imageMogr2/auto-orient/thumbnail/400x");
          if (isOfficial)
          {
              request.object.set("type",1);
