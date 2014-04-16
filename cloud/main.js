@@ -167,6 +167,7 @@ AV.Cloud.beforeSave("Photo", function(request, response){
     }
     else if (type == 11)
     {
+        request.object.set("isOfficial",true);
 //        console.log("成功设置一张焦点图图");
     }
     else
