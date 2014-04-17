@@ -156,7 +156,9 @@ AV.Cloud.beforeSave("Photo", function(request, response){
         var url = request.object.get("originalURL");
         if (!url)
         {
+
             response.error();
+            console.log("originalURL为空old");
         }
         else
         {
@@ -165,12 +167,12 @@ AV.Cloud.beforeSave("Photo", function(request, response){
             if (isOfficial)
             {
                 request.object.set("type",1);
-//             console.log("成功设置一张官方图");
+                console.log("成功设置一张官方图old");
             }
             else
             {
                 request.object.set("type",2);
-//             console.log("成功设置一张街拍图");
+                console.log("成功设置一张街拍图old");
             }
             response.success();
         }
@@ -179,16 +181,18 @@ AV.Cloud.beforeSave("Photo", function(request, response){
     else if (type == 1)
     {
         response.success();
+        console.log("成功设置一张官方图new");
     }
     else if (type == 2)
     {
         response.success();
+        console.log("成功设置一张街拍图new");
     }
     else if (type == 11)
     {
         request.object.set("isOfficial",true);
         response.success();
-//        console.log("成功设置一张焦点图图");
+        console.log("成功设置一张焦点图new");
     }
     else
     {
