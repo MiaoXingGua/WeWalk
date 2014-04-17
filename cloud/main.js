@@ -158,9 +158,8 @@ AV.Cloud.beforeSave("Photo", function(request, response){
     {
         //老版
 
-        if (!url)
+        if (!originalURL)
         {
-
             response.error();
             console.log("originalURL为空old");
         }
