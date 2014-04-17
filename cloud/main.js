@@ -125,11 +125,11 @@ AV.Cloud.define("getRequest",function(request, response) {
     AV.Cloud.httpRequest({
         url: url,
         success: function(httpResponse) {
-            console.dir(httpResponse);
+//            console.dir(httpResponse);
             response.success(httpResponse.text);
         },
         error: function(httpResponse) {
-            console.dir(httpResponse);
+//            console.dir(httpResponse);
             response.error('Request failed with response code ' + httpResponse.status);
         }
     });
