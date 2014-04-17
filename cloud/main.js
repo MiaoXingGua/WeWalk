@@ -154,19 +154,27 @@ AV.Cloud.beforeSave("Photo", function(request, response){
     {
         //老版
         var url = request.object.get("originalURL");
-        request.object.set("originalURL",url+"?imageMogr2/auto-orient/");
-        request.object.set("thumbnailURL",url+"?imageMogr2/auto-orient/thumbnail/400x");
-         if (isOfficial)
-         {
-             request.object.set("type",1);
+        if (!url)
+        {
+            response.error();
+        }
+        else
+        {
+            request.object.set("originalURL",url+"?imageMogr2/auto-orient/");
+            request.object.set("thumbnailURL",url+"?imageMogr2/auto-orient/thumbnail/400x");
+            if (isOfficial)
+            {
+                request.object.set("type",1);
 //             console.log("成功设置一张官方图");
-         }
-         else
-         {
-             request.object.set("type",2);
+            }
+            else
+            {
+                request.object.set("type",2);
 //             console.log("成功设置一张街拍图");
-         }
-        response.success();
+            }
+            response.success();
+        }
+
     }
     else if (type == 1)
     {
