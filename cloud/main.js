@@ -150,10 +150,14 @@ AV.Cloud.beforeSave("Photo", function(request, response){
     var isOfficial = request.object.get('isOfficial');
     request.object.set('hot',0);
 //    request.object.set('isHidden',false);
+
+    var thumbnailURL = request.object.get("thumbnailURL");
+    var originalURL = request.object.get("originalURL");
+
     if (!type)
     {
         //老版
-        var url = request.object.get("originalURL");
+
         if (!url)
         {
 
@@ -162,8 +166,8 @@ AV.Cloud.beforeSave("Photo", function(request, response){
         }
         else
         {
-            request.object.set("originalURL",url+"?imageMogr2/auto-orient/");
-            request.object.set("thumbnailURL",url+"?imageMogr2/auto-orient/thumbnail/400x");
+            request.object.set("originalURL",originalURL+"?imageMogr2/auto-orient/");
+            request.object.set("thumbnailURL",originalURL+"?imageMogr2/auto-orient/thumbnail/180x");
             if (isOfficial)
             {
                 request.object.set("type",1);
@@ -176,23 +180,26 @@ AV.Cloud.beforeSave("Photo", function(request, response){
             }
             response.success();
         }
-
     }
     else if (type == 1)
     {
-        response.success();
         console.log("成功设置一张官方图new");
+        response.success();
     }
     else if (type == 2)
     {
-        response.success();
+        if (!thumbnailURL)
+        {
+            request.object.set("thumbnailURL",originalURL+"thumbnail/180x");
+        }
         console.log("成功设置一张街拍图new");
+        response.success();
     }
     else if (type == 11)
     {
         request.object.set("isOfficial",true);
-        response.success();
         console.log("成功设置一张焦点图new");
+        response.success();
     }
     else
     {
