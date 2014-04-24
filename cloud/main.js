@@ -154,9 +154,10 @@ AV.Cloud.beforeSave("Photo", function(request, response){
     var thumbnailURL = request.object.get("thumbnailURL");
     var originalURL = request.object.get("originalURL");
 
-    if (!type)
+    request.object.set("isAuth",false);
+
+    if (!type)  //老版
     {
-        //老版
 
         if (!originalURL)
         {
@@ -167,6 +168,9 @@ AV.Cloud.beforeSave("Photo", function(request, response){
         {
             request.object.set("originalURL",originalURL+"?imageMogr2/auto-orient/");
             request.object.set("thumbnailURL",originalURL+"?imageMogr2/auto-orient/thumbnail/180x");
+
+
+
             if (isOfficial)
             {
                 request.object.set("type",1);
