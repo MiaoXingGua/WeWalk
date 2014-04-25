@@ -146,6 +146,8 @@ AV.Cloud.beforeSave("ReportLog", function(request, response){
 
     var reason = request.object.get('reason');
     var photo = request.object.get('photo');
+    console.dir(reason);
+    console.dir(photo);
     if (reason == "侵权" && photo)
     {
        console.log("photo侵权");
