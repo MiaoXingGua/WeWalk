@@ -147,9 +147,9 @@ AV.Cloud.beforeSave("ReportLog", function(request, response){
     var reason = request.object.get('reason');
     var photoId = request.object.get('photo').id;
 
-    if (reason == '显示比例异常' && photoId)
+    if (reason == '图片比例显示异常' && photoId)
     {
-        console.log("显示比例异常");
+        console.log("图片比例显示异常");
         var photoQ = new AV.Query(Photo);
         photoQ.get(photoId, {
             success: function(photo) {
