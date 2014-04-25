@@ -147,13 +147,13 @@ AV.Cloud.beforeSave("ReportLog", function(request, response){
     var reason = request.object.get('reason');
     var photoId = request.object.get('photo').id;
 
-    if (reason == '欺诈' && photoId)
+    if (reason == '显示比例异常' && photoId)
     {
-        console.log("欺诈");
+        console.log("显示比例异常");
         var photoQ = new AV.Query(Photo);
         photoQ.get(photoId, {
             success: function(photo) {
-                // The object was retrieved successfully.
+
                 var originalURL = photo.get("originalURL");
                 if (originalURL)
                 {
