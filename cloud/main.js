@@ -160,10 +160,17 @@ AV.Cloud.beforeSave("ReportLog", function(request, response){
                     AV.Cloud.httpRequest({
                         url: originalURL+'|imageInfo',
                         success: function(httpResponse) {
-                            console.log(httpResponse.text);
+                            console.log('请求图片信息成功 ：' + httpResponse.status);
+                            var resultInfo = JSON.parse(httpResponse.text);
+                            if (resultInfo)
+                            {
+                                photo.set('width',resultInfo['width']);
+                                photo.set('height',resultInfo['height']);
+                                photo.save();
+                            }
                         },
                         error: function(httpResponse) {
-                            console.error('Request failed with response code ' + httpResponse.status);
+                            console.error('请求图片信息失败 ：' + httpResponse.status);
                         }
                     });
                 }
