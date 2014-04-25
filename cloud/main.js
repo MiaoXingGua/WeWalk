@@ -160,7 +160,7 @@ AV.Cloud.beforeSave("ReportLog", function(request, response){
                     AV.Cloud.httpRequest({
                         url: originalURL+'|imageInfo',
                         success: function(httpResponse) {
-                            console.log('请求图片信息成功 ：' + httpResponse.status);
+                            console.log('photo : ' + photo.id + '\n图片信息 : ' + httpResponse.text);
                             var resultInfo = JSON.parse(httpResponse.text);
                             if (resultInfo)
                             {
