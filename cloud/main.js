@@ -142,7 +142,7 @@ AV.Cloud.define("getRequest",function(request, response) {
 //
 //});
 
-AV.Cloud.beforeSave("Photo", function(request, response){
+AV.Cloud.beforeSave("ReportLog", function(request, response){
 
     var reason = request.object.get('reason');
     var photo = request.object.get('photo');
@@ -150,6 +150,7 @@ AV.Cloud.beforeSave("Photo", function(request, response){
     {
        console.log("photo侵权");
     }
+    response.success();
 
 });
 
