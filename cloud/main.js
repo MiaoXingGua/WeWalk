@@ -144,6 +144,17 @@ AV.Cloud.define("getRequest",function(request, response) {
 
 AV.Cloud.beforeSave("Photo", function(request, response){
 
+    var reason = request.object.get('reason');
+    var photo = request.object.get('photo');
+    if (reason.equalTo("侵权") && photo)
+    {
+       console.log("photo侵权");
+    }
+
+});
+
+AV.Cloud.beforeSave("Photo", function(request, response){
+
 //    console.dir(request.object);
 
     var type = request.object.get('type');
