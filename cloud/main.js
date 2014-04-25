@@ -145,12 +145,36 @@ AV.Cloud.define("getRequest",function(request, response) {
 AV.Cloud.beforeSave("ReportLog", function(request, response){
 
     var reason = request.object.get('reason');
-    var photo = request.object.get('photo');
-    console.dir(reason);
-    console.dir(photo);
-    if (reason == "侵权" && photo)
+    var photoId = request.object.get('photo').id;
+
+    if (reason == '欺诈' && photoId)
     {
-       console.log("photo侵权");
+        console.log("欺诈");
+        var photoQ = new AV.Query(Photo);
+        photoQ.get(photoId, {
+            success: function(photo) {
+                // The object was retrieved successfully.
+                var originalURL = photo.get("originalURL");
+                if (originalURL)
+                {
+                    AV.Cloud.httpRequest({
+                        url: originalURL+'|imageInfo',
+                        success: function(httpResponse) {
+                            console.log(httpResponse.text);
+                        },
+                        error: function(httpResponse) {
+                            console.error('Request failed with response code ' + httpResponse.status);
+                        }
+                    });
+                }
+            },
+            error: function(photo, error) {
+                // The object was not retrieved successfully.
+                // error is a AV.Error with an error code and description.
+            }
+        });
+
+
     }
     response.success();
 
