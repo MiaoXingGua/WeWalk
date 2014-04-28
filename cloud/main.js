@@ -405,7 +405,7 @@ function PM25() {
 
 if (__production)
 {
-    AV.Cloud.setInterval('PM25_timer', 60*20, PM25);
+    AV.Cloud.setInterval('PM25_timer', 60*60, PM25);
 }
 else
 {
