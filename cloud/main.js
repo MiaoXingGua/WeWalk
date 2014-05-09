@@ -1,6 +1,8 @@
 // Use AV.Cloud.define to define as many cloud functions as you want.
 // For example:
 
+require('cloud/app.js');
+
 var array = ['a1','2b','ccc'];
 
 AV.Cloud.define("hello", function(request, response) {
@@ -138,8 +140,15 @@ AV.Cloud.define("getRequest",function(request, response) {
 
 function userDictFromUserObject(user){
     var userDict = {};
-    userDict['objectId'] = user.get('objectId');
-    userDict['gender'] = user.get('gender');
+    userDict['objectId'] = user.id;
+    if (user.get('gender'))
+    {
+        userDict['gender'] = true;
+    }
+    else
+    {
+        userDict['gender'] = false;
+    }
     userDict['nickname'] = user.get('nickname');
     userDict['largeHeadViewURL'] = user.get('largeHeadViewURL');
     return userDict;
@@ -160,9 +169,9 @@ function userDictsFromUserObjects(users){
 function commentDictFromCommentObject(comment){
 
     var commentDict = {};
-    commentDict['objectId'] = comment.get('objectId');
+    commentDict['objectId'] = comment.id;
     commentDict['user'] = userDictFromUserObject(comment.get('user'));
-    commentDict['createdAt'] = comment.get('createdAt');
+    commentDict['createdAt'] = comment.createdAt//comment.get('createdAt'); bug
     var content = comment.get('content');
     var contentDict = {};
     contentDict['text'] = content.get('text');
