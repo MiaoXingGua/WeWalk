@@ -6,6 +6,20 @@
   </head>
   <body>
   	<div><%= photoDict %></div>
-
+	<table class='table table-bordered'>
+		<% if (photoDict){ %>
+		  <td> <%= photoDict.get('comments') %> </td>
+		  <td> <%= photoDict.get('commentsCount') %> </td>
+		  <td> <%= photoDict.get('faviconUsers') %> </td>
+		  <td> <%= photoDict.get('faviconsCount') %> </td>
+		  <td> <%= photoDict.get('user') %> </td>
+		  <td> <%= photoDict.get('width') %> </td>
+		  <td> <%= photoDict.get('height') %> </td>
+		  <td> <%= photoDict.get('objectId') %> </td>
+		  <td> <%= photoDict.get('originalURL') %> </td>
+		  <td> <%= photoDict.get('thumbnailURL') %> </td>
+		<% })
+		   } %>
+	  </table>
   </body>
 </html>
