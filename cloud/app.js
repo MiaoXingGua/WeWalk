@@ -18,7 +18,7 @@ app.use(express.bodyParser());          // 读取请求 body 的中间件
 // 使用 Express 路由 API 服务 /hello 的 HTTP GET 请求
 app.get('/sharePhoto/:objectId', function(request, response) {
 
-  res.render('sharePhoto', { objectId: request.param.objectId });
+//  res.render('sharePhoto', { objectId: request.param.objectId });
 //    res.render('hello', { message: request.params.objectId });
 
     var photoId = request.param.objectId;
