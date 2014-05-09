@@ -191,7 +191,7 @@ function commentDictsFromCommentObjects(comments){
     return commentDicts;
 }
 
-AV.Cloud.define("getPhoto",function(request, response) {
+AV.Cloud.define("sharePhoto",function(request, response) {
     var photoId = request.params.photoId;
     if (!photoId)
     {
