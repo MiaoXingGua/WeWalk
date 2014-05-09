@@ -26,7 +26,7 @@ app.get('/sharePhoto/:objectId', function(request, response) {
 
         if (photoDict && !error)
         {
-            response.render('index',{ photoDict : photoDict});
+            response.render('sharePhoto',{ photoDict : photoDict});
         }
         else
         {
