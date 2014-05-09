@@ -9,13 +9,15 @@
 	<table class='table table-bordered'>
 		<% if (photoDict){ %>
 
-		  <td> 图片id : <%= photoDict.objectId %> </td>
-		  /*
-		  <td> 图片拥有者 : <%= photoDict.get('user').get('nickname') %> </td>
-		  <td> 
-		  	<img src=<%= photoDict.get('originalURL') %> width=photoDict.get('width') height=<%= photoDict.get('height') %>  alt=<%= photoDict.get('originalURL') %> />
-		  </td>
+		  <td> 图片id : <%= photoDict['objectId'] %> </td>
 		  
+		  <td> 图片拥有者 : <%= photoDict['user']['objectId'] %> </td>
+		  <td> 
+		  	<img src=<%= photoDict['originalURL'] %> width=photoDict['width'] height=<%= photoDict['height'] %>  alt=<%= photoDict['originalURL'] %> />
+		  </td>
+
+		  <%
+		  /*
 		  <td> 评论数 : <%= photoDict.get('commentsCount') %> </td>
 
 
@@ -24,8 +26,10 @@
 		  <td> 赞数 : <%= photoDict.get('faviconsCount') %> </td>
 		  <td> <%= photoDict.get('faviconUsers') %> </td>
 		  */
+		  %>
 
 		<% } %>
 	  </table>
   </body>
 </html>
+
