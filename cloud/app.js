@@ -18,10 +18,10 @@ app.use(express.bodyParser());          // 读取请求 body 的中间件
 // 使用 Express 路由 API 服务 /hello 的 HTTP GET 请求
 app.get('/sharePhoto/:objectId', function(request, response) {
 
-//  res.render('sharePhoto', { objectId: request.param.objectId });
+//  res.render('sharePhoto', { objectId: request.params.objectId });
 //    res.render('hello', { message: request.params.objectId });
 
-    var photoId = request.param.objectId;
+    var photoId = request.params.objectId;
     sharePhoto(photoId,function(photoDict,error){
 
         if (photoDict && !error)
@@ -94,7 +94,7 @@ function sharePhoto(photoId,done){
 
     if (!photoId)
     {
-        response.error('参数错误');
+        done(null,'参数错误');
     }
 
     var resultDic = {};
