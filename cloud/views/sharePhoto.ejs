@@ -5,7 +5,7 @@
     <title>图片分享Demo</title>
   </head>
   <body>
-  	<div><%= photoDict %></div>
+  	
 	<table class='table table-bordered'>
 		<% if (photoDict){ %>
 
@@ -16,17 +16,7 @@
 		  	<img src=<%= photoDict['originalURL'] %> width=photoDict['width'] height=<%= photoDict['height'] %>  alt=<%= photoDict['originalURL'] %> />
 		  </td>
 
-		  <%
-		  /*
-		  <td> 评论数 : <%= photoDict.get('commentsCount') %> </td>
-
-
-		  <td>  <%  photoDict.get('comments').forEach(function (comment){ %> </td>
-		  <% }) %>
-		  <td> 赞数 : <%= photoDict.get('faviconsCount') %> </td>
-		  <td> <%= photoDict.get('faviconUsers') %> </td>
-		  */
-		  %>
+		  
 
 		<% } %>
 	  </table>
