@@ -135,6 +135,53 @@ AV.Cloud.define("getRequest",function(request, response) {
     });
 });
 
+
+function userDictFromUserObject(user){
+    var userDict = {};
+    userDict['objectId'] = user.get('objectId');
+    userDict['gender'] = user.get('gender');
+    userDict['nickname'] = user.get('nickname');
+    userDict['largeHeadViewURL'] = user.get('largeHeadViewURL');
+    return userDict;
+}
+
+function userDictsFromUserObjects(users){
+
+    var userDicts = [];
+
+    for (var userKey in users)
+    {
+        userDicts.push(userDictFromUserObject(users[userKey]));
+    }
+
+    return userDicts;
+}
+
+function commentDictFromCommentObject(comment){
+
+    var commentDict = {};
+    commentDict['objectId'] = comment.get('objectId');
+    commentDict['user'] = userDictFromUserObject(comment.get('user'));
+    commentDict['createdAt'] = comment.get('createdAt');
+    var content = comment.get('content');
+    var contentDict = {};
+    contentDict['text'] = content.get('text');
+    commentDict['content'] = contentDict;
+    return commentDict;
+}
+
+function commentDictsFromCommentObjects(comments){
+
+    var commentDicts = [];
+
+    for (var commentKey in comments)
+    {
+        commentDicts.push(commentDictFromCommentObject(comments[commentKey]));
+    }
+
+    return commentDicts;
+}
+
 AV.Cloud.define("getPhoto",function(request, response) {
     var photoId = request.params.photoId;
     if (!photoId)
@@ -155,67 +202,47 @@ AV.Cloud.define("getPhoto",function(request, response) {
             resultDic['width'] = photo.get('width');
             resultDic['height'] = photo.get('height');
             resultDic['content'] = photo.get('content');
-            resultDic['user'] = photo.get('user');
 
-            var userFQ = photo.relation('faviconUsers').query;
-            userFQ.count().then(function(count){
+            var user = photo.get('user');
 
-                resultDic['faviconsCount'] = count;
-                var userFQ = photo.relation('faviconUsers').query;
-                return userFQ.find();
+            resultDic['user'] = userDictFromUserObject(user);
 
-                }, function(error) {
+            var userFQ = photo.relation('faviconUsers').query();
+            userFQ.find().then(function(faviconUsers){
+//
+                   resultDic['faviconsCount'] = faviconUsers.length;
 
-                 response.error('查询收藏数失败');
+//                   console.log(faviconUsers.length);
+                   if (faviconUsers.length > 0)
+                   resultDic['faviconUsers'] = userDictsFromUserObjects(faviconUsers);
 
-                }).then(function(faviconUsers){
-
-                   resultDic['faviconUsers'] = faviconUsers;
                    var commentQ = new AV.Query(Comment);
-                   commentQ.equalTo('photo',photoId);
-                   return commentQ.count();
+                   console.log(photoId);
+                   commentQ.equalTo('photo',AV.Object.createWithoutData("Photo", photoId));
+                   commentQ.include(['user','content']);
+                   return commentQ.find();
 
                 }, function(error) {
 
-                    response.error('查询收藏列表失败');
-
-                }).then(function(count){
-
-                    resultDic['commentsCount'] = count;
-                    var commentQ = new AV.Query(Comment);
-                    commentQ.equalTo('photo',photoId);
-                    commentQ.include(['user','content']);
-                    return commentQ.find();
-
-                }, function(error) {
-
-                    response.error('查询评论数失败');
+                    response.error('查询收藏列表失败 : ' + error);
 
                 }).then(function(comments){
 
-                    var commentsList = [];
-                    for (var key in comments)
-                    {
-                        var comment = comments[key];
+//                    console.log(faviconUsers.length);
+                    resultDic['commentsCount'] = comments.length;
+                    if (comments.length > 0)
+                    resultDic['comments'] = commentDictsFromCommentObjects(comments);
 
-                        var commentDic = {};
-                        commentDic['user'] = comment.get('user');
-                        commentDic['content'] = comment.get('content');
-
-                        commentsList.push(commentDic);
-                    }
-
-                    resultDic['comments'] = commentsList;
                     response.success(resultDic);
 
                 }, function(error) {
 
-                    response.error('查询评论列表失败');
+                    response.error('查询评论列表失败 : ' + error);
 
                 });
         },
         error: function(photo, error) {
-            response.error('查找图片失败');
+            response.error('查找图片失败 : ' + error);
         }
     });
 });
