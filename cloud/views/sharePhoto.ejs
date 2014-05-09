@@ -6,20 +6,36 @@
   </head>
   <body>
   	
-	<table class='table table-bordered'>
+	
 		<% if (photoDict){ %>
 
-		  <td> 图片id : <%= photoDict['objectId'] %> </td>
+		  <div> 图片id : <%= photoDict['objectId'] %> </div>
 		  
-		  <td> 图片拥有者 : <%= photoDict['user']['objectId'] %> </td>
-		  <td> 
+		  <div> 图片拥有者 : <%= photoDict['user']['nickname'] %> </div>
+		  <div> 
 		  	<img src=<%= photoDict['originalURL'] %> width=photoDict['width'] height=<%= photoDict['height'] %>  alt=<%= photoDict['originalURL'] %> />
-		  </td>
+		  </div>
 
-		  
+		  <div> 赞数 : <%= photoDict['faviconsCount'] %> </div>
+		  <div> 评论列表 : </div>
+		  	<%  photoDict['faviconUsers'].forEach(function (user){ %>
+		
+		 	 <div> <%= user['nickname'] %> </div>
+		
+			<% }) %>
+
+		  <div> 评论数 : <%= photoDict['commentsCount'] %> </div>
+		  <div> 评论列表 : </div>
+		  	<%  photoDict['comments'].forEach(function (comment){ %>
+		
+		 		<div>评论内容 : <%= comment['content']['text'] %> </div>
+				<div>评论时间 : <%= comment['createdAt'] %> </div>
+				<div>评论人 : <%= comment['user']['nickname'] %> </div>
+
+			<% }) %>
 
 		<% } %>
-	  </table>
+	  
   </body>
 </html>
 
