@@ -19,11 +19,13 @@
 		<div>
 		  <div> 赞数 : <%= photoDict['faviconsCount'] %> </div>
 		  <div> 评论列表 : </div>
+		  <table class='table table-bordered'>
 		  	<%  photoDict['faviconUsers'].forEach(function (user){ %>
 		
-		 	 <div> <%= user['nickname'] %> </div>
+		 	 <tr><td> <%= user['nickname'] %> </tr></td>
 		
 			<% }) %>
+		</table>
 		</div>
 		<div>
 		  <div> 评论数 : <%= photoDict['commentsCount'] %> </div>
