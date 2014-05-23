@@ -8,6 +8,9 @@ var Photo = AV.Object.extend('Photo');
 var Comment = AV.Object.extend('Comment');
 var Content = AV.Object.extend('Content');
 
+//时间
+var moment = require('moment');
+
 // App 全局配置
 app.set('views','cloud/views');     // 设置模板目录
 
@@ -69,7 +72,7 @@ function commentDictFromCommentObject(comment){
     var commentDict = {};
     commentDict['objectId'] = comment.id;
     commentDict['user'] = userDictFromUserObject(comment.get('user'));
-    commentDict['createdAt'] = comment.createdAt//comment.get('createdAt'); bug
+    commentDict['createdAt'] = calculateDate(comment.createdAt);//comment.get('createdAt'); bug
     var content = comment.get('content');
     var contentDict = {};
     contentDict['text'] = content.get('text');
@@ -90,7 +93,106 @@ function commentDictsFromCommentObjects(comments){
 }
 
 
+function calculateDate(date){
+
+    console.dir(new Date());
+    console.dir(date);
+
+    var diff = moment(new Date()).diff(moment(date));
+
+    if (diff < 0)
+    {
+        diff = moment(new Date()).diff(moment(date).add('hours',-8));
+    }
+
+    diff /= 1000;
+
+    console.log(diff);
+
+    if(diff<60)
+    {
+        return parseInt(diff)+"秒前";
+    }
+    else if(diff>=60 && diff<3600)
+    {
+        return parseInt(diff/60)+"分钟前";
+    }
+    else if(diff>=3600 && diff<86400)
+    {
+        return parseInt(diff/60/60)+"小时前";
+    }
+    else if(diff>=86400 && diff<2592000)
+    {
+        return parseInt(diff/60/60/24)+"天前";
+    }
+    else if(diff>=2592000 && diff<31104000)
+    {
+        return parseInt(diff/60/60/24/30)+"月前";
+    }
+    else
+    {
+        return parseInt(diff/60/60/24/30/12)+"年前";
+    }
+
+//    //年
+//    var yearD = moment(new Date()).year()-moment(date).year();
+//
+//    if (yearD > 0)
+//    {
+//        return yearD + "年前";
+//    }
+//
+//    //月
+//    var monthD = moment(new Date()).month()-moment(date).month();
+//
+//    if (monthD > 0)
+//    {
+//        return monthD + "月前";
+//    }
+//
+//    //日
+//    var dayD = moment(new Date()).day()-moment(date).day();
+//
+//    if (dayD > 0)
+//    {
+//        return dayD + "天前";
+//    }
+//
+//    //小时
+//    var hourD = moment(new Date()).hour()-moment(date).hour();
+//    if (hourD<0)
+//    {
+//        hourD = moment(new Date()).hour()-moment(date).hour()+8;
+//    }
+//
+//    if (hourD > 0)
+//    {
+//        return hourD + "小时前";
+//    }
+//
+//    //分
+//    var minuteD = moment(new Date()).minute()-moment(date).minute();
+//
+//    if (minuteD > 0)
+//    {
+//        return minuteD + "分钟前";
+//    }
+//
+//    //秒
+//    var secondD = moment(new Date()).second()-moment(date).second();
+//
+//    if (secondD > 0)
+//    {
+//        return secondD + "秒前";
+//    }
+
+    return '未知';
+}
+
+
 function sharePhoto(photoId,done){
+
+    console.log("分享照片");
 
     if (!photoId)
     {
@@ -101,7 +203,8 @@ function sharePhoto(photoId,done){
     resultDic['objectId'] = photoId;
 
     var photoQ = new AV.Query(Photo);
-    photoQ.include(['user','content']);
+    photoQ.include('user');
+    photoQ.include('content');
     photoQ.get(photoId, {
         success: function(photo) {
 
@@ -109,13 +212,30 @@ function sharePhoto(photoId,done){
             resultDic['thumbnailURL'] = photo.get('thumbnailURL');
             resultDic['width'] = photo.get('width');
             resultDic['height'] = photo.get('height');
-            resultDic['content'] = photo.get('content');
+            resultDic['createdAt'] = calculateDate(photo.createdAt);
+
+//            console.dir(photo.createdAt);
+//            console.log(photo.createdAt);
+//            return;
+
+            var content = photo.get('content');
+
+            if (content)
+            {
+                var contentDict = {};
+                contentDict['text'] = content.get('text');
+                resultDic['content'] = contentDict;
+            }
+            else
+            {
+                resultDic['content'] = {'text':''};
+            }
 
             var user = photo.get('user');
-
             resultDic['user'] = userDictFromUserObject(user);
 
             var userFQ = photo.relation('faviconUsers').query();
+            userFQ.limit(8);
             userFQ.find().then(function(faviconUsers){
 //
                 resultDic['faviconsCount'] = faviconUsers.length;
@@ -123,6 +243,8 @@ function sharePhoto(photoId,done){
 //                   console.log(faviconUsers.length);
                 if (faviconUsers.length > 0)
                     resultDic['faviconUsers'] = userDictsFromUserObjects(faviconUsers);
+                else
+                    resultDic['faviconUsers'] = [];
 
                 var commentQ = new AV.Query(Comment);
 
@@ -133,27 +255,31 @@ function sharePhoto(photoId,done){
             }, function(error) {
 
 //                response.error('查询收藏列表失败 : ' + error);
+                cosole.dir(error);
                 done(null,'查询收藏列表失败');
 
             }).then(function(comments){
 
-//                    console.log(faviconUsers.length);
+//                    console.log(comments.length);
                     resultDic['commentsCount'] = comments.length;
                     if (comments.length > 0)
                         resultDic['comments'] = commentDictsFromCommentObjects(comments);
-
+                    else
+                        resultDic['comments'] = [];
 //                    response.success(resultDic);
                     done(resultDic,null);
 
                 }, function(error) {
 
 //                    response.error('查询评论列表失败 : ' + error);
+                    cosole.dir(error);
                     done(null,'查询评论列表失败');
 
                 });
         },
         error: function(photo, error) {
 //            response.error('查找图片失败 : ' + error);
+            cosole.dir(error);
             done(null,'查找图片失败');
         }
     });
