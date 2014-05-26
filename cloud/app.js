@@ -74,9 +74,17 @@ function commentDictFromCommentObject(comment){
     commentDict['user'] = userDictFromUserObject(comment.get('user'));
     commentDict['createdAt'] = calculateDate(comment.createdAt);//comment.get('createdAt'); bug
     var content = comment.get('content');
-    var contentDict = {};
-    contentDict['text'] = content.get('text');
-    commentDict['content'] = contentDict;
+    if (content)
+    {
+        var contentDict = {};
+        contentDict['text'] = content.get('text');
+        commentDict['content'] = contentDict;
+    }
+    else
+    {
+        commentDict['content'] = {'text':''};
+    }
+
     return commentDict;
 }
 
@@ -95,8 +103,9 @@ function commentDictsFromCommentObjects(comments){
 
 function calculateDate(date){
 
-    console.dir(new Date());
     console.dir(date);
+    console.dir(moment(date).format("YYYY-MM-DD"));
+    console.dir(typeof moment(date).format("YYYY-MM-DD"));
 
     var diff = moment(new Date()).diff(moment(date));
 
@@ -109,30 +118,40 @@ function calculateDate(date){
 
     console.log(diff);
 
-    if(diff<60)
+    if (diff<60)
     {
         return parseInt(diff)+"秒前";
     }
-    else if(diff>=60 && diff<3600)
+    else if (diff>=60 && diff<3600)
     {
         return parseInt(diff/60)+"分钟前";
     }
-    else if(diff>=3600 && diff<86400)
+    else if (diff>=3600 && diff<86400)
     {
         return parseInt(diff/60/60)+"小时前";
     }
-    else if(diff>=86400 && diff<2592000)
+    else if (diff>=86400 && diff<432000)
     {
         return parseInt(diff/60/60/24)+"天前";
     }
-    else if(diff>=2592000 && diff<31104000)
-    {
-        return parseInt(diff/60/60/24/30)+"月前";
-    }
     else
     {
-        return parseInt(diff/60/60/24/30/12)+"年前";
+        return moment(date).format("YYYY-MM-DD");
     }
+
+//    else if (diff>=86400 && diff<2592000)
+//    {
+//        return parseInt(diff/60/60/24)+"天前";
+//    }
+//
+//    else if(diff>=2592000 && diff<31104000)
+//    {
+//        return parseInt(diff/60/60/24/30)+"月前";
+//    }
+//    else
+//    {
+//        return parseInt(diff/60/60/24/30/12)+"年前";
+//    }
 
 //    //年
 //    var yearD = moment(new Date()).year()-moment(date).year();
@@ -189,6 +208,10 @@ function calculateDate(date){
     return '未知';
 }
 
+
+AV.Cloud.define("calculateDate",function(request, response) {
+    calculateDate(new Date());
+});
 
 function sharePhoto(photoId,done){
 

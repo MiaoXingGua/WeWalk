@@ -121,7 +121,6 @@ function limitQuery(request,query,done){
     done(query);
 }
 
-
 AV.Cloud.define("getRequest",function(request, response) {
     var url = request.params.url;
     AV.Cloud.httpRequest({
@@ -137,9 +136,6 @@ AV.Cloud.define("getRequest",function(request, response) {
     });
 });
 
-
-
-
 //AV.Cloud.define("toDate", function(request, response) {
 //
 ////    console.log(toDate("2014-01-21T10:00:00Z","yyyy-MM-dd'T'HH:mm:ssZ",0));
@@ -150,10 +146,11 @@ AV.Cloud.define("getRequest",function(request, response) {
 AV.Cloud.beforeSave("ReportLog", function(request, response){
 
     var reason = request.object.get('reason');
-    var photoId = request.object.get('photo').id;
+    var photo = request.object.get('photo');
 
-    if (reason == '图片比例显示异常' && photoId)
+    if (reason == '图片比例显示异常' && photo)
     {
+        var photoId = photo.id;
         console.log("图片比例显示异常");
         var photoQ = new AV.Query(Photo);
         photoQ.get(photoId, {
@@ -187,7 +184,10 @@ AV.Cloud.beforeSave("ReportLog", function(request, response){
 
 
     }
-    response.success();
+    else
+    {
+        response.success();
+    }
 
 });
 
