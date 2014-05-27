@@ -168,17 +168,28 @@ AV.Cloud.beforeSave("ReportLog", function(request, response){
                             {
                                 photo.set('width',resultInfo['width']);
                                 photo.set('height',resultInfo['height']);
-                                photo.save();
+                                photo.save(null, {
+                                    success: function(photo) {
+                                        response.success();
+                                    },
+                                    error: function(photo, error) {
+
+                                        console.error('保存图片信息失败 ：' + error.description);
+                                        response.error('保存图片信息失败 ：' + error.description);
+                                    }
+                                });
                             }
                         },
                         error: function(httpResponse) {
                             console.error('请求图片信息失败 ：' + httpResponse.status);
+                            response.error('请求图片信息失败 ：' + httpResponse.status);
                         }
                     });
                 }
             },
             error: function(photo, error) {
                 console.error('查找图片失败 ：' + error);
+                response.error('查找图片失败 ：' + error);
             }
         });
 
