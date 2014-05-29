@@ -1,0 +1,37 @@
+
+
+<!DOCTYPE HTML>
+	<html lang="cn">
+	<head>
+	    <meta charset="utf-8" />
+	    <title><%= title %></title>
+
+		    <script>      
+			function viewmypic(mypic,imgfile) {       
+				if (imgfile.value){       
+					mypic.src=imgfile.value;       
+					mypic.style.display="";       
+					mypic.border=1;       
+				}       
+			}       
+			</script>
+
+	</head>
+	<body>
+
+		
+	    <!-- <h1>请选择需要上传的文件</h1> -->
+	    <h1><%= title %></h1>
+    	<form action="/uploadAdPhoto" method="post" enctype="multipart/form-data" accept-charset="utf-8">
+	        
+	        <input type="file" name="file" value="" onchange="viewmypic(showImage,this.form.file);"/></br>
+	        
+
+
+	        <input type="submit" name="ti'jiao" value="上传" />
+	        <!-- <button>Submit</button> -->
+	    </form>
+	    <img name="" id="showImage" src="" style="display:none;" alt="预览图片" />    
+	    <div style="display:none">  </div> 
+	</body>
+	</html>

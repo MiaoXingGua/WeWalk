@@ -38,6 +38,43 @@ app.get('/sharePhoto/:objectId', function(request, response) {
     });
 });
 
+app.get('/uploadAdPhoto', function(request, response) {
+
+    response.render('uploadAdPhoto', {'title':"请选择需要上传的文件"});
+//    res.render('hello', { message: request.params.objectId });
+
+});
+
+var fs = require('fs');
+app.post('/uploadAdPhoto', function(request, response) {
+    var file = request.files.file;
+    if(file)
+    {
+        fs.readFile(file.path, function(error, data)
+        {
+            if(error)
+            {
+//                return response.send("读取文件失败");
+                return response.render('uploadAdPhoto', {'title':"读取文件失败!!!"});
+            }
+
+            var base64Data = data.toString('base64');
+            var theFile = new AV.File(file.name, {base64: base64Data});
+            theFile.save().then(function(theFile){
+//                response.send("上传成功！");
+                response.render('uploadAdPhoto', {'title':"上传成功!!!"});
+            });
+        });
+    }
+    else
+    {
+//        response.send("请选择一个文件。");
+        response.render('uploadAdPhoto', {'title':"请选择一个文件!!!"});
+    }
+});
+
+
+
 //
 function userDictFromUserObject(user){
     var userDict = {};
