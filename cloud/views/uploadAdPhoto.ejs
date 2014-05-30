@@ -8,8 +8,8 @@
 
 		    <script>      
 			function viewmypic(mypic,imgfile) {       
-				if (imgfile.value){     
-					var url = getPath(imgfile.value)  
+				if (imgfile){     
+					var url = getPath(imgfile)  
 					mypic.src=imgfile.value;       
 					mypic.style.display="";       
 					mypic.border=1;       

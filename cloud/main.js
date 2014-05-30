@@ -136,6 +136,136 @@ AV.Cloud.define("getRequest",function(request, response) {
     });
 });
 
+AV.Cloud.define("robot", function(request, response) {
+
+    AV._initialize('sy9s3xqtcdi3nsogyu1gnojg0wxslws0kl28lgd02hgsddff', 'bc0cullpfyceroe12164i8evoi5cw4zpbszssgtqp0k78xyh', 'k7prl1jmpwk7lx5q49b8rfz0mfkdlft1otj3abzxvdpiqx76');
+    AV.Cloud.useMasterKey();
+
+    var robotQ = new AV.Query(User);
+    robotQ.equalTo('isRobot',true);
+    robotQ.ascending('createdAt');
+    robotQ.doesNotExist('robotName');
+//    robotQ.select('objectId');
+//    robotQ.skip(100);
+    robotQ.limit(100);
+
+    var firstNumber = request.params.firstNumber;
+    if (firstNumber)
+    robotQ.find().then(function(robots) {
+
+        for (var i in robots)
+        {
+            var robot = robots[i];
+            robot.set('robotName',parseInt(i)+parseInt(firstNumber));
+            robot.save(null, {
+                success: function(robot) {
+                    response.success("保存成功:",robot.id);
+                },
+                error: function(robot, error) {
+                    console.dir(error);
+                    response.error("保存失败"+error.description);
+                }
+            });
+        }
+    }, function(error) {
+
+        console.dir("查询失败 : "+error);
+        response.error("查询失败"+error.description);
+    });
+    else response.error("firstNumber为空");
+
+
+//    robot(null,robotQ,0,function (robotList,error){
+//
+//        console.log(robotList.length);
+//
+//        for (var i in robotList)
+//        {
+//            robotList[i].set('robotName',parseInt(i));
+////            robotList[i].save();
+////            console.log(robotList[i].id);
+////            var robot = robotList[i];
+////            robot.set('robotName',parseInt(i));
+////            robot.save(null, {
+////                success: function(robot) {
+////                    response.success("保存成功:",robot.id);
+////                },
+////                error: function(robot, error) {
+////                    console.dir(error);
+////                    response.error("保存失败"+error.description);
+////                }
+////            });
+//        }
+//
+////        AV.Object.saveAll(aqis, function(list, error) {
+////            if (list) {
+////                // All the objects were saved.
+////                console.log('保存PM25成功');
+////                //                            console.log('成功存入aqi数量 ： '+list.length);
+////
+////            } else {
+////                // An error occurred.
+////                console.log('保存PM25失败1');
+////                console.dir(error);
+////            }
+////        });
+//
+//        AV.Object.saveAll(robotList, function(list, error){
+//            if (!error) {
+//                console.log('保存成功');
+//                response.success("保存成功:");
+//            } else {
+//                response.error("保存失败");
+//                console.dir(error);
+//            }
+//        });
+//    });
+});
+
+
+function robot(robotList,query,skip,done){
+
+    if (!robotList)
+    {
+        robotList = new Array();
+    }
+    query.skip(skip);
+//    console.log(skip);
+    query.find().then(function(robots) {
+
+        console.log(robotList.length);
+
+        if (robots.length==0)
+        {
+            done(robotList,null);
+        }
+
+        for (var i in robots)
+        {
+            robotList.push(robots[i]);
+        }
+
+        if (robots.length<100)
+        {
+            done(robotList,null);
+        }
+        else
+        {
+            robot(robotList,query,skip+100,done);
+        }
+
+
+
+    }, function(error) {
+
+        console.dir("查询失败 : "+error);
+        done(robotList,error);
+    });
+
+}
+
+
+
 //AV.Cloud.define("toDate", function(request, response) {
 //
 ////    console.log(toDate("2014-01-21T10:00:00Z","yyyy-MM-dd'T'HH:mm:ssZ",0));
@@ -192,14 +322,11 @@ AV.Cloud.beforeSave("ReportLog", function(request, response){
                 response.error('查找图片失败 ：' + error);
             }
         });
-
-
     }
     else
     {
         response.success();
     }
-
 });
 
 AV.Cloud.beforeSave("Photo", function(request, response){
@@ -218,7 +345,6 @@ AV.Cloud.beforeSave("Photo", function(request, response){
 
     if (!type)  //老版
     {
-
         if (!originalURL)
         {
             response.error();
@@ -228,8 +354,6 @@ AV.Cloud.beforeSave("Photo", function(request, response){
         {
             request.object.set("originalURL",originalURL+"?imageMogr2/auto-orient/");
             request.object.set("thumbnailURL",originalURL+"?imageMogr2/auto-orient/thumbnail/180x");
-
-
 
             if (isOfficial)
             {
