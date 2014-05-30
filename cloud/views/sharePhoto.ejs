@@ -1,0 +1,312 @@
+<html  lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!-- <meta name="apple-itunes-app" content="app-id=823474803, app-argument=zhihu://photo/23336437"> -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" media="(device-height: 568px)">
+	<meta name="format-detection" content="telephone=no" searchtype="map">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+    <title>微行YOUWEEK</title>
+    <script src="/js/zepto.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="/css/wapcss.css?91" >
+	<style>
+
+/** 遮盖层 **/
+.mask {position:fixed; width: 100%; height: 100%; top:0; background: #000000; opacity: 0.5;}
+.tipContainer {background: white; width: 96%; margin-left: 2%; height: 73px; position: fixed; top: 4px; border-radius: 3px;}
+.tipContainer .tipHeader{margin: 8px 0 0 8px; font-size: 12px; color:#8c8c8e;}
+.tipContainer .tipContent {text-align: center;margin-top: 12px; font-size: 12px; color:#020202;}
+.tipContainer .tipContent em { font-style: normal; font-size:14px; color:#f36f21;}
+/** tag 的定位及动画 **/
+.leftTag,.rightTag {position: absolute;}
+.tagAnimation {width: 34px; height: 34px;  position:relative;}
+.animationContainer {position:absolute; top: 0; left: 0; text-align: center;line-height:34px;width:34px; height:34px;}
+.black1,.black2{width:34px; height:34px; background:url("/img/photo_detail/brand_black_bg.png") no-repeat; opacity: 0.6;display:inline-block;background-size:34px 34px;}
+.leftTag .tagContent {font-size: 12px;position:relative; top:-34px; left:24px; padding-left: 12px; background:url("/img/photo_detail/left_tag_arrow.png") no-repeat;background-size: 12px 26px;line-height: 26px; opacity: 0.8;margin-top:4px;}
+.leftTag .tagContentInfo {background: url("/img/photo_detail/tag_content_bg.png") repeat-x; border-radius: 0 5px 5px 0; color:white; font-size: 12px; padding-right: 8px;}
+.rightTag .tagContent {font-size: 12px;position:relative; top:-34px; left:0; padding-right: 12px; background:url("/img/photo_detail/right_tag_arrow.png") right center no-repeat;background-size: 12px 26px;line-height: 26px; opacity: 0.8;margin-top:4px;}
+.rightTag .tagContentInfo {background: url("/img/photo_detail/tag_content_bg.png") repeat-x; border-radius: 5px 0 0 5px; color:white; font-size: 12px; padding-left: 8px;}
+.rightTag .tagAnimation {position:absolute; top: -4px; right: -24px;}
+.brand_bg,.point_bg {width:16px; height:16px; background:url("/img/photo_detail/icon_brand.png") no-repeat; display:inline-block; background-size:16px 16px;vertical-align:middle; -webkit-animation:brand 1.95s infinite; /* Safari and Chrome */}
+.point_bg {background-image: url("/img/photo_detail/icon_place.png");}
+
+@-webkit-keyframes brand /* Safari and Chrome */
+{
+    0%   {-webkit-transform: scale(0.8, 0.8);}
+    10%  {-webkit-transform: scale(1.25, 1.25);}
+    20%  {-webkit-transform: scale(1, 1);}
+    100% {-webkit-transform: scale(1, 1);}
+}
+
+.black1 {
+    -webkit-animation:blackFirst 1.95s infinite; /* Safari and Chrome */
+}
+
+@-webkit-keyframes blackFirst /* Safari and Chrome */
+{
+    0%   {-webkit-transform: scale(0.23, 0.23);}
+    20%  {-webkit-transform: scale(0.23, 0.23); opacity: 1;}
+    66%  {-webkit-transform: scale(1, 1); opacity: 0.05;}
+    67%  {-webkit-transform: scale(0.23, 0.23);}
+    100% {-webkit-transform: scale(0.23, 0.23);}
+}
+
+.black2 {
+    -webkit-animation:blackSecond 1.95s infinite; /* Safari and Chrome */
+}
+
+@-webkit-keyframes blackSecond /* Safari and Chrome */
+{
+    0%   {-webkit-transform: scale(0.23, 0.23);}
+    44%  {-webkit-transform: scale(0.23, 0.23); opacity: 1;}
+    90%  {-webkit-transform: scale(1, 1); opacity: 0.05;}
+    91%  {-webkit-transform: scale(0.23, 0.23);}
+    100% {-webkit-transform: scale(0.23, 0.23);}
+}
+</style>
+  </head>
+  <body>
+  	
+		<% if (photoDict){ %>
+		<!-- <div>
+		  <div> 图片id : <%= photoDict['objectId'] %> </div>
+		  
+		  <div> 图片拥有者 : <%= photoDict['user']['nickname'] %> </div>
+		  <div> 
+		  	<img src=<%= photoDict['originalURL'] %> width=photoDict['width'] height=<%= photoDict['height'] %>  alt=<%= photoDict['originalURL'] %> />
+		  </div>
+		</div>
+		<div>
+		  <div> 赞数 : <%= photoDict['faviconsCount'] %> </div>
+		  <div> 评论列表 : </div>
+		  <table class='table table-bordered'>
+		  	<%  photoDict['faviconUsers'].forEach(function (user){ %>
+		
+		 	 <tr><td> <%= user['nickname'] %> </tr></td>
+		
+			<% }) %>
+		</table>
+		</div>
+		<div>
+		  <div> 评论数 : <%= photoDict['commentsCount'] %> </div>
+		  <div> 评论列表 : </div>
+		  	<%  photoDict['comments'].forEach(function (comment){ %>
+		
+		 		<div>评论内容 : <%= comment['content']['text'] %> </div>
+				<div>评论时间 : <%= comment['createdAt'] %> </div>
+				<div>评论人 : <%= comment['user']['nickname'] %> </div>
+
+			<% }) %>
+	</div> -->
+
+	<!-- <div id="wrap"> -->
+    <div class="wrap_head">
+        <img src="/img/yklogo.png" alt="nice" width="145" height="50">
+        <div class="download_icons">
+            <a class="ios_download_link" id="ios_download_link" style="display:none;" href="wb2585079848://photo/<%= photoDict['objectId'] %>">进入微行</a>
+            <a class="android_download_link" style="display:none;" href="http://apk.gfan.com/baidudownload.php?apk=772291&src=baidupage" class="android_download android_download_link">下载Android版</a>        </div>
+    </div>
+    <div class="wrap_main">
+          <div class="wrap_img">
+              <!-- <img src="http://img1-niceapp.u.qiniudn.com/upload/show/201405/09/5cad829f231e1ca39dd5a2783e648391.jpg" id="cur_img"> -->
+              <img src=<%= photoDict['originalURL'] %>  alt=<%= photoDict['originalURL'] %> / id="cur_img">
+              <div class="leftTag" data-top="209.531250" data-left="192.656250" style="display:none"><div class="tagAnimation"><div class="animationContainer"><span class="black1"></span></div><div class="animationContainer"><span class="black2"></span></div><div class="animationContainer"><span class="brand_bg"></span></div></div><div class="tagContent"><div class="tagContentInfo">ChaoBaby</div></div></div>          </div>
+          <div class="contian">
+             <ul class="contian_t">
+                 <li class="t_img"><img src=<%= photoDict['user']['largeHeadViewURL'] %>></li>
+                 <li class="t_wen"><%= photoDict['user']['nickname'] %></li>
+                 <li class="t_time"><%= photoDict['createdAt'] %></li>
+             </ul>
+             <p><%= photoDict['content']['text'] %></p>
+          </div>
+          <div class="up_login">
+            想看最IN时装搭配？<a class="ios_download_link" style="display:none;" href="http://itunes.apple.com/cn/app/wei-xingyouweek/id823474803">下载iPhone版</a><a class="android_download_link" style="display:none;"href="http://apk.gfan.com/baidudownload.php?apk=772291&src=baidupage">下载Android版</a>          </div>
+          <div class="user_r"><h2><%= photoDict['faviconsCount'] %>人赞了</h2>
+          <ul>
+            <%  photoDict['faviconUsers'].forEach(function (user){ %>
+
+              <li><img src=<%= user['largeHeadViewURL'] %>></li>
+                
+            <% }) %>
+          </ul>
+          </div>
+          <div class="user_r user_r2"><h2><%= photoDict['commentsCount'] %>条评论</h2>
+          <div class="user_list">
+
+          <%  photoDict['comments'].forEach(function (comment){ %>
+            <dl>
+              <dt>
+                <img src=<%= comment['user']['largeHeadViewURL'] %>>
+              </dt>
+              <dd>
+                <p class="user_info"><span class="u_user"><%= comment['user']['nickname'] %></span><span class="u_time"><%= comment['createdAt']%></span></p>
+                <p class="u_wen"><%= comment['content']['text'] %></p>
+              </dd>
+            </dl>
+
+          <% }) %>
+            
+          </div></div>    </div>
+    <P class="more_content">更多内容下载微行YOUWEEK注册加入查看</p>
+    <div class="wrap_foot">
+       <div class="weibo">关注微博：<a href="http://weibo.com/u/5117347670" target="_blank">@微行YOUWEEK</a></div>
+       <div class="weixin">关注微信公众账号：微行YOUWEEK</div>
+    </div>
+    <div class="mask" style="display:none">
+    </div>
+    <div class="tipContainer" style="display:none">
+       <div class="tipHeader">
+            <img src="/img/photo_detail/nice_tip_icon.png" alt="nice" width="12" height="12"/>
+            微行YOUWEEK提示：
+        </div>
+        <div class="tipContent">
+            <p>下载应用，获得最IN的时装搭配！</p>
+            <p>请点击右上角按钮，在<em>“浏览器中打开”</em>进行下载。</p>
+        </div>
+        <div style="display:none">
+            <script type="text/javascript">
+            var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+            document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F0a615c950ee719977112f4bc5166ea0c' type='text/javascript'%3E%3C/script%3E"));
+            </script>
+        </div>
+    </div>
+<!-- </div> -->
+		<% } %>
+	  
+  </body>
+</html>
+
+<script>
+    (function(){
+        // function resize(){
+        //     var screenWidth = $(window).width() - 20;
+        //     $("#cur_img").css({ "width" : screenWidth, "height": screenWidth});
+
+        //     $(".rightTag").each(function(i){
+        //         var item = $(this), w, l, t;
+        //         //获取元素的宽度
+        //         item.show();
+        //         w = item.find(".tagContentInfo").width();
+        //         l = parseInt(item.data("left"));
+        //         t = parseInt(item.data("top"));
+        //         item.css({
+        //             "left": l / 300 * screenWidth - w - 22,
+        //             "top": t / 300 * screenWidth + 18
+        //         });
+        //     });
+
+        //     $(".leftTag").each(function(i){
+        //         var item = $(this), w, l, t;
+        //         //获取元素的宽度
+        //         item.show();
+        //         w = item.width();
+        //         l = parseInt(item.data("left"));
+        //         t = parseInt(item.data("top"));
+        //         item.css({
+        //             "left": l / 300 * screenWidth - 15,
+        //             "top": t / 300 * screenWidth - 15
+        //         });
+        //     });
+        // }
+
+        function isAndroid(){
+            var ua = navigator.userAgent.toLowerCase();
+
+            if(ua.indexOf("android") > -1 ) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function isIos(){
+            var ua = navigator.userAgent.toLowerCase();
+
+            if(ua.indexOf("iphone") > -1 || ua.indexOf("ipad") > -1 || ua.indexOf("ipod") > -1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function isInWeixin(){
+            var ua = navigator.userAgent.toLowerCase();
+
+            if(ua.indexOf("micromessenger") > -1) {
+                return true;
+            } else{
+                return false;
+            }
+        }
+
+        // function showMask(){
+        //     $(".mask").show();
+        //     $(".tipContainer").show();
+        // }
+
+        // function hideMask(){
+        //     $(".mask").hide();
+        //     $(".tipContainer").hide();
+        // }
+
+        // $('#cur_img').on("load", function(){
+        //     resize();
+        // });
+        var appstore = "http://itunes.apple.com/cn/app/wei-xingyouweek/id823474803?mt=8";  
+          function applink(fail){  
+                return function(){  
+                    var clickedAt = +new Date;  
+                    // During tests on 3g/3gs this timeout fires immediately if less than 500ms.  
+                    setTimeout(function(){  
+                              // To avoid failing on return to MobileSafari, ensure freshness!  
+                              if (+new Date - clickedAt < 2000){  
+                              window.location = fail;  
+                              }  
+                              }, 500);      
+                };  
+            } 
+            document.getElementById("ios_download_link").onclick = applink(appstore);
+        if(isIos()) {
+            $(".ios_download_link").show();
+            documen .getElementById("ios_download_link").text="正在下载";
+            
+        } else {
+            $(".android_download_link").show();
+            // window.location = "intent://[host]/"+"url="+openUrl+"#Intent;scheme=[scheme];package=[package_name];end";
+        }
+
+        // if (typeof window.onorientationchange !== 'undefined') {
+        //     window.addEventListener('orientationchange', resize, false);
+        //     if (isAndroid()) {
+        //         window.addEventListener('resize', resize, false);
+        //     }
+        // } else {
+        //     window.addEventListener('resize', resize, false)
+        // }
+
+        $(".android_download_link").on("click", function(){
+            if(isInWeixin()) {
+                showMask();
+                return false;
+            }
+        });
+        // var sWidth = $(window).width();
+        // if(isInWeixin() && isAndroid()) {
+        //     setTimeout(function(){
+        //         if(sWidth != $(window).width()) {
+        //             resize();
+        //         }
+        //     }, 500);
+        // }
+
+        // $(window).on('load', function(){resize();})
+        // $(".mask").on("touchstart", function(){
+        //     hideMask();
+        // });
+        
+
+    })();
+
+
+</script>
+
