@@ -429,7 +429,7 @@ AV.Cloud.beforeSave("Photo", function(request, response){
     else if (!url)      //1.2 版
     {
         console.log("1.2版");
-        url = originalURLsplit('?')[0];
+        url = originalURL.split('?')[0];
         console.log(url);
         if (url) request.object.set("url",url);
         response.success();
