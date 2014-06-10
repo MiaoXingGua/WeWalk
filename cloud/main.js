@@ -283,6 +283,41 @@ function robot(robotList,query,skip,done){
 
 }
 
+AV.Cloud.define("addUrl", function(request, response) {
+
+    addUrl(function (string){
+     response.success(string);
+
+    });
+
+});
+
+function addUrl(done)
+{
+
+    var photoQ = new AV.Query(Photo);
+    photoQ.doesNotExist('url');
+    photoQ.limit(1);
+    photoQ.first({
+        success: function(photo) {
+            var url = photo.get('originalURL').split('?')[0];
+            photo.set('url',url);
+            photo.save().then(function(obj) {
+                console.log('保存成功')
+                addUrl(done);
+            }, function(error) {
+                console.log('保存失败');
+                console.dir(error);
+                addUrl(done);
+            });
+        },
+        error: function(error) {
+            console.log('查询失败');
+            console.dir(error);
+            addUrl(done);
+        }
+    });
+}
 
 
 //AV.Cloud.define("toDate", function(request, response) {
@@ -348,6 +383,8 @@ AV.Cloud.beforeSave("ReportLog", function(request, response){
     }
 });
 
+
+
 AV.Cloud.beforeSave("Photo", function(request, response){
 
 //    console.dir(request.object);
@@ -359,7 +396,7 @@ AV.Cloud.beforeSave("Photo", function(request, response){
 
     var thumbnailURL = request.object.get("thumbnailURL");
     var originalURL = request.object.get("originalURL");
-    var URL = request.object.get("url");
+    var url = request.object.get("url");
 
     request.object.set("isAuth",false);
 
@@ -388,9 +425,10 @@ AV.Cloud.beforeSave("Photo", function(request, response){
             response.success();
         }
     }
-    else if (!URL)
+    else if (!url)      //1.2 版
     {
-        request.object.set("url",originalURLsplit('?')[0]);
+        url = originalURLsplit('?')[0];
+        if (url) request.object.set("url",url);
     }
     else if (type == 1)
     {
