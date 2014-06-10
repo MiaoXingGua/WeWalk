@@ -38,6 +38,15 @@ app.get('/sharePhoto/:objectId', function(request, response) {
     });
 });
 
+app.get('/hello', function(request, response) {
+
+
+    response.render('hello', { message: "http://www.w3school.com.cn/i/movie.ogg" });
+
+});
+
+
+
 app.get('/uploadAdPhoto', function(request, response) {
 
     response.render('uploadAdPhoto', {'title':"请选择需要上传的文件"});
@@ -252,7 +261,7 @@ AV.Cloud.define("calculateDate",function(request, response) {
 
 function sharePhoto(photoId,done){
 
-    console.log("分享照片");
+    console.log("分享照片 : "+photoId);
 
     if (!photoId)
     {
@@ -263,10 +272,12 @@ function sharePhoto(photoId,done){
     resultDic['objectId'] = photoId;
 
     var photoQ = new AV.Query(Photo);
+    photoQ.equalTo('objectId',photoId);
+
     photoQ.include('user');
     photoQ.include('content');
-    photoQ.get(photoId, {
-        success: function(photo) {
+
+    photoQ.find().then(function(photo) {
 
             resultDic['originalURL'] = photo.get('originalURL');
             resultDic['thumbnailURL'] = photo.get('thumbnailURL');
@@ -336,13 +347,11 @@ function sharePhoto(photoId,done){
                     done(null,'查询评论列表失败');
 
                 });
-        },
-        error: function(photo, error) {
+        },function(error) {
 //            response.error('查找图片失败 : ' + error);
             cosole.dir(error);
             done(null,'查找图片失败');
-        }
-    });
+        }).then().then().then();
 }
 
 AV.Cloud.define("sharePhoto",function(request, response) {

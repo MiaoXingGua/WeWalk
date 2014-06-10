@@ -40,6 +40,9 @@ var AirQualityIndex = AV.Object.extend('AirQualityIndex');
 
 var PM25AppKey = "siv7h7ydxAEBoQw5Z3Lj";
 
+AV._initialize('sy9s3xqtcdi3nsogyu1gnojg0wxslws0kl28lgd02hgsddff', 'bc0cullpfyceroe12164i8evoi5cw4zpbszssgtqp0k78xyh', 'k7prl1jmpwk7lx5q49b8rfz0mfkdlft1otj3abzxvdpiqx76');
+AV.Cloud.useMasterKey();
+
 /****************
  通用函数
  *****************/
@@ -136,10 +139,26 @@ AV.Cloud.define("getRequest",function(request, response) {
     });
 });
 
-AV.Cloud.define("robot", function(request, response) {
+//538d3786e4b0518d450c4369
+//AV.Cloud.define("changePhotoCreatedAt",function(request, response) {
+//
+//    var photo = AV.Object.createWithoutData("Photo", "538d3786e4b0518d450c4369");
+//    photo.set('createdAt',toDate("2014-07-01 00:00:00","YYYY-MM-DD HH:mm:ss"));
+//    photo.save();
+//
+//});
 
-    AV._initialize('sy9s3xqtcdi3nsogyu1gnojg0wxslws0kl28lgd02hgsddff', 'bc0cullpfyceroe12164i8evoi5cw4zpbszssgtqp0k78xyh', 'k7prl1jmpwk7lx5q49b8rfz0mfkdlft1otj3abzxvdpiqx76');
-    AV.Cloud.useMasterKey();
+//getAdPhoto
+AV.Cloud.define("getAdPhoto",function(request, response) {
+
+    var cityNo = request.params.cityNo;
+    var districtNo = request.params.districtNo;
+    var lastPhotoId = request.params.lastPhotoId;
+
+
+});
+
+AV.Cloud.define("robot", function(request, response) {
 
     var robotQ = new AV.Query(User);
     robotQ.equalTo('isRobot',true);
@@ -340,10 +359,11 @@ AV.Cloud.beforeSave("Photo", function(request, response){
 
     var thumbnailURL = request.object.get("thumbnailURL");
     var originalURL = request.object.get("originalURL");
+    var URL = request.object.get("url");
 
     request.object.set("isAuth",false);
 
-    if (!type)  //老版
+    if (!type)  //1.0版
     {
         if (!originalURL)
         {
@@ -367,6 +387,10 @@ AV.Cloud.beforeSave("Photo", function(request, response){
             }
             response.success();
         }
+    }
+    else if (!URL)
+    {
+        request.object.set("url",originalURLsplit('?')[0]);
     }
     else if (type == 1)
     {
@@ -542,6 +566,9 @@ function PM25() {
 
 }
 
+//release
+//release
+//release
 //release
 
 if (__production)
