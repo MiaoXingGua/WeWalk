@@ -410,6 +410,7 @@ AV.Cloud.beforeSave("Photo", function(request, response){
         }
         else
         {
+            request.object.set("url",originalURL);
             request.object.set("originalURL",originalURL+"?imageMogr2/auto-orient/");
             request.object.set("thumbnailURL",originalURL+"?imageMogr2/auto-orient/thumbnail/180x");
 
