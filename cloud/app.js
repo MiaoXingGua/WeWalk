@@ -27,6 +27,7 @@ app.get('/sharePhoto/:objectId', function(request, response) {
     var photoId = request.params.objectId;
     sharePhoto(photoId,function(photoDict,error){
 
+        console.log("呵呵");
         if (photoDict && !error)
         {
             response.render('sharePhoto',{ photoDict : photoDict});
@@ -277,10 +278,11 @@ function sharePhoto(photoId,done){
     photoQ.include('user');
     photoQ.include('content');
 
-    photoQ.find().then(function(photo) {
+    photoQ.first().then(function(photo) {
 
             resultDic['originalURL'] = photo.get('originalURL');
             resultDic['thumbnailURL'] = photo.get('thumbnailURL');
+
             resultDic['width'] = photo.get('width');
             resultDic['height'] = photo.get('height');
             resultDic['createdAt'] = calculateDate(photo.createdAt);

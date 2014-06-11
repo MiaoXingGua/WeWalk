@@ -398,42 +398,47 @@ AV.Cloud.beforeSave("ReportLog", function(request, response){
     }
 });
 
-
-
-AV.Cloud.afterUpdate("_User", function(request) {
+AV.Cloud.beforeSave("_User", function(request, response) {
 
     var user = request.object;
-    var appVer = user.get('appVer');
-    if (!appVer || appVer < 1.3)
-    {
-        console.log("进入");
-        var faviconPhotosQ = user.relation('faviconPhotos').query();
-        faviconPhotosQ.descending('updatedAt');
-        faviconPhotosQ.select('objectId');
-        getFaviconPhotos(faviconPhotosQ,null,function (photoIdList,error){
+    console.dir(user);
+    console.dir(user.relation('faviconPhotos'));
+    response.success();
 
-
-            if (!error)
-            {
-                console.log("发现"+photoIdList.length+"个收藏的图片");
-                var user =  AV.Object.createWithoutData("_User", request.object.id);
-
-                for (var i in photoIdList)
-                {
-
-                    var photo = AV.Object.createWithoutData("Photo", photoIdList[i]);
-
-                    //因为是异步 所以必须写成一个方法
-                    addRelation(user,photo,'favicon');
-                }
-            }
-            else
-            {
-                 console.dir(error);
-            }
-        });
-    }
 });
+
+//AV.Cloud.afterUpdate("_User", function(request) {
+//
+//    var user = request.object;
+//    var appVer = user.get('appVer');
+//    if (!appVer || appVer < 1.3)
+//    {
+//        console.log("新增收藏");
+//        var faviconPhotosQ = user.relation('faviconPhotos').query();
+//        faviconPhotosQ.descending('updatedAt');
+//        faviconPhotosQ.select('objectId');
+//        getFaviconPhotos(faviconPhotosQ,null,function (photoIdList,error){
+//
+//            if (!error)
+//            {
+//                console.log("发现"+photoIdList.length+"个收藏的图片");
+//                var user =  AV.Object.createWithoutData("_User", request.object.id);
+//
+//                for (var i in photoIdList)
+//                {
+//                    var photo = AV.Object.createWithoutData("Photo", photoIdList[i]);
+//
+//                    //因为是异步 所以必须写成一个方法
+//                    addRelation(user,photo,'favicon');
+//                }
+//            }
+//            else
+//            {
+//                 console.dir(error);
+//            }
+//        });
+//    }
+//});
 
 function addRelation(user,photo,type){
 
@@ -503,7 +508,33 @@ function getFaviconPhotos(faviconPhotosQ,photoList,done){
 
     });
 
-};
+}
+
+
+AV.Cloud.define("testGetPhoto", function(request, response) {
+
+    var photoQ = new AV.Query(Photo);
+    photoQ.equalTo('objectId','5390103fe4b0e335f61161fa');
+
+    photoQ.include('user');
+    photoQ.include('content');
+
+    photoQ.find().then(function(photo) {
+
+        console.dir(photo);
+        var url = photo.get('originalURL');
+        console.dir(url);
+
+    },function(error) {
+
+        cosole.dir(error);
+        done(null,'查找图片失败');
+    });
+
+});
+
+
+
 
 AV.Cloud.beforeSave("Photo", function(request, response){
 
