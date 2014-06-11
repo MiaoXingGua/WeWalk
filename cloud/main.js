@@ -284,6 +284,21 @@ function robot(robotList,query,skip,done){
     });
 }
 
+AV.Cloud.define("updateRobot", function(request, response) {
+
+    var robotId =  request.params.roborId;
+    var robot =  AV.Object.createWithoutData("_User", robotId);
+    var nickname =  request.params.nickname;
+    var largeHeadViewURL =  request.params.largeHeadViewURL;
+    robot.set('nickname',nickname);
+    robot.set('largeHeadViewURL',largeHeadViewURL);
+    robot.save().then(function(obj) {
+        response.success(obj);
+    }, function(error) {
+        response.error(error);
+    });
+});
+
 AV.Cloud.define("countTest", function(request, response) {
 
     var testQ = new AV.Query(Test);
@@ -414,6 +429,7 @@ AV.Cloud.beforeSave("_User", function(request, response) {
 //    if (!appVer || appVer < 1.3)
 //    {
 //        console.log("新增收藏");
+//
 //        var faviconPhotosQ = user.relation('faviconPhotos').query();
 //        faviconPhotosQ.descending('updatedAt');
 //        faviconPhotosQ.select('objectId');
@@ -497,7 +513,7 @@ function getFaviconPhotos(faviconPhotosQ,photoList,done){
         else
         {
             faviconPhotosQ.skip+=100;
-            favicon2relation(faviconPhotosQ,photoList,done);
+            getFaviconPhotos(faviconPhotosQ,photoList,done);
         }
 
 
@@ -509,31 +525,6 @@ function getFaviconPhotos(faviconPhotosQ,photoList,done){
     });
 
 }
-
-
-AV.Cloud.define("testGetPhoto", function(request, response) {
-
-    var photoQ = new AV.Query(Photo);
-    photoQ.equalTo('objectId','5390103fe4b0e335f61161fa');
-
-    photoQ.include('user');
-    photoQ.include('content');
-
-    photoQ.find().then(function(photo) {
-
-        console.dir(photo);
-        var url = photo.get('originalURL');
-        console.dir(url);
-
-    },function(error) {
-
-        cosole.dir(error);
-        done(null,'查找图片失败');
-    });
-
-});
-
-
 
 
 AV.Cloud.beforeSave("Photo", function(request, response){
