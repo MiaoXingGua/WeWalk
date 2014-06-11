@@ -34,6 +34,10 @@ var Temperature = AV.Object.extend('Temperature');
 var WeatherType = AV.Object.extend('WeatherType');
 var Tickler = AV.Object.extend('Tickler');
 
+var Relation = AV.Object.extend('Relation');
+
+var Test = AV.Object.extend('Test');
+
 var Notification = AV.Object.extend('_Notification');
 
 var AirQualityIndex = AV.Object.extend('AirQualityIndex');
@@ -273,15 +277,26 @@ function robot(robotList,query,skip,done){
             robot(robotList,query,skip+100,done);
         }
 
-
-
     }, function(error) {
 
         console.dir("查询失败 : "+error);
         done(robotList,error);
     });
-
 }
+
+AV.Cloud.define("countTest", function(request, response) {
+
+    var testQ = new AV.Query(Test);
+    testQ.count({
+        success: function(count) {
+            // The count request succeeded. Show the count
+            console.log("Sean has played " + count + " games");
+        },
+        error: function(error) {
+            console.dir(error);
+        }
+    });
+});
 
 AV.Cloud.define("addUrl", function(request, response) {
 
@@ -384,6 +399,111 @@ AV.Cloud.beforeSave("ReportLog", function(request, response){
 });
 
 
+
+AV.Cloud.afterUpdate("_User", function(request) {
+
+    var user = request.object;
+    var appVer = user.get('appVer');
+    if (!appVer || appVer < 1.3)
+    {
+        console.log("进入");
+        var faviconPhotosQ = user.relation('faviconPhotos').query();
+        faviconPhotosQ.descending('updatedAt');
+        faviconPhotosQ.select('objectId');
+        getFaviconPhotos(faviconPhotosQ,null,function (photoIdList,error){
+
+
+            if (!error)
+            {
+                console.log("发现"+photoIdList.length+"个收藏的图片");
+                var user =  AV.Object.createWithoutData("_User", request.object.id);
+
+                for (var i in photoIdList)
+                {
+
+                    var photo = AV.Object.createWithoutData("Photo", photoIdList[i]);
+
+                    //因为是异步 所以必须写成一个方法
+                    addRelation(user,photo,'favicon');
+                }
+            }
+            else
+            {
+                 console.dir(error);
+            }
+        });
+    }
+});
+
+function addRelation(user,photo,type){
+
+    var relationQuery = new AV.Query(Relation);
+    relationQuery.equalTo('photo',photo);
+    relationQuery.equalTo('user',user);
+    relationQuery.equalTo('type',type);
+
+    relationQuery.count({
+        success: function(count) {
+            if (count==0)
+            {
+                console.log("添加收藏");
+                var relation = new Relation();
+                relation.set('photo',photo);
+                relation.set('user',user);
+                relation.set('type',type);
+                relation.save();
+            }
+            else
+            {
+                console.log("已经收藏");
+            }
+
+        },
+        error: function(error) {
+            console.log("查看收藏失败");
+            console.dir(error);
+        }
+    });
+}
+
+function getFaviconPhotos(faviconPhotosQ,photoList,done){
+
+    if (!photoList)
+    {
+        photoList = new Array();
+    }
+
+    faviconPhotosQ.find().then(function(photos) {
+
+        if (photos.length==0)
+        {
+            done(photoList,null);
+        }
+
+        for (var i in photos)
+        {
+            photoList.push(photos[i].id);
+        }
+
+        if (photos.length<100)
+        {
+            done(photoList,null);
+        }
+        else
+        {
+            faviconPhotosQ.skip+=100;
+            favicon2relation(faviconPhotosQ,photoList,done);
+        }
+
+
+    }, function(error) {
+
+        console.log("查询失败1");
+        done(photoList,error);
+
+    });
+
+};
 
 AV.Cloud.beforeSave("Photo", function(request, response){
 
