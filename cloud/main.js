@@ -289,10 +289,10 @@ AV.Cloud.define("updateRobot", function(request, response) {
     var robotId =  request.params.roborId;
     var robot =  AV.Object.createWithoutData("_User", robotId);
     var nickname =  request.params.nickname;
-    var largeHeadViewURL =  request.params.largeHeadViewURL;
+    var headViewURL =  request.params.headViewURL;
     robot.set('nickname',nickname);
-    robot.set('largeHeadViewURL',largeHeadViewURL+"?imageMogr2/auto-orient/");
-    robot.set('smallHeadViewURL',largeHeadViewURL+"?imageMogr2/auto-orient/thumbnail/128x128");
+    robot.set('largeHeadViewURL',headViewURL+"?imageMogr2/auto-orient/");
+    robot.set('smallHeadViewURL',headViewURL+"?imageMogr2/auto-orient/thumbnail/128x128");
     robot.set('headViewURL',headViewURL);
     robot.save().then(function(obj) {
         response.success(obj);
