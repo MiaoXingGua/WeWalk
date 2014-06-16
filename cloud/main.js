@@ -415,14 +415,14 @@ AV.Cloud.beforeSave("ReportLog", function(request, response){
     }
 });
 
-AV.Cloud.beforeSave("_User", function(request, response) {
-
-    var user = request.object;
-    console.dir(user);
-    console.dir(user.relation('faviconPhotos'));
-    response.success();
-
-});
+//AV.Cloud.beforeSave("_User", function(request, response) {
+//
+//    var user = request.object;
+//    console.dir(user);
+//    console.dir(user.relation('faviconPhotos'));
+//    response.success();
+//
+//});
 
 //AV.Cloud.afterUpdate("_User", function(request) {
 //
@@ -599,10 +599,14 @@ AV.Cloud.beforeSave("Photo", function(request, response){
         console.log("成功设置一张焦点图new");
         response.success();
     }
+    else if (type == 21)
+    {
+        response.success();
+    }
     else
     {
         console.log("图类型无法识别？ type: "+ type + "isOfficial: " + isOfficial);
-        response.error();
+        response.error("图类型无法识别？ type: "+ type);
     }
 });
 
