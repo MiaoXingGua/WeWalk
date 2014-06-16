@@ -7,6 +7,7 @@ var User = AV.Object.extend('_User');
 var Photo = AV.Object.extend('Photo');
 var Comment = AV.Object.extend('Comment');
 var Content = AV.Object.extend('Content');
+var Constellation = AV.Object.extend('Constellation');
 
 //时间
 var moment = require('moment');
@@ -19,15 +20,17 @@ app.set('view engine', 'ejs');          // 设置template引擎
 app.use(express.bodyParser());          // 读取请求 body 的中间件
 
 // 使用 Express 路由 API 服务 /hello 的 HTTP GET 请求
-app.get('/sharePhoto/:objectId', function(request, response) {
+app.get('/hello', function(request, response) {
 
-//  res.render('sharePhoto', { objectId: request.params.objectId });
-//    res.render('hello', { message: request.params.objectId });
+    response.render('hello', { message: "http://www.w3school.com.cn/i/movie.ogg" });
+});
+
+app.get('/sharePhoto/:objectId', function(request, response) {
 
     var photoId = request.params.objectId;
     sharePhoto(photoId,function(photoDict,error){
 
-        console.log("呵呵");
+//        console.log("呵呵");
         if (photoDict && !error)
         {
             response.render('sharePhoto',{ photoDict : photoDict});
@@ -39,14 +42,21 @@ app.get('/sharePhoto/:objectId', function(request, response) {
     });
 });
 
-app.get('/hello', function(request, response) {
+app.get('/shareConstellation/:objectId', function(request, response) {
 
+    var constellationId = request.params.objectId;
+    shareConstellation(constellationId,function(constellationDict,error){
 
-    response.render('hello', { message: "http://www.w3school.com.cn/i/movie.ogg" });
-
+        if (photoDict && !error)
+        {
+            response.render('shareConstellation',{ constellationDict : constellationDict});
+        }
+        else
+        {
+            response.render('500',500)
+        }
+    });
 });
-
-
 
 app.get('/uploadAdPhoto', function(request, response) {
 
@@ -150,9 +160,9 @@ function commentDictsFromCommentObjects(comments){
 
 function calculateDate(date){
 
-    console.dir(date);
-    console.dir(moment(date).format("YYYY-MM-DD"));
-    console.dir(typeof moment(date).format("YYYY-MM-DD"));
+//    console.dir(date);
+//    console.dir(moment(date).format("YYYY-MM-DD"));
+//    console.dir(typeof moment(date).format("YYYY-MM-DD"));
 
     var diff = moment(new Date()).diff(moment(date));
 
@@ -185,72 +195,6 @@ function calculateDate(date){
     {
         return moment(date).format("YYYY-MM-DD");
     }
-
-//    else if (diff>=86400 && diff<2592000)
-//    {
-//        return parseInt(diff/60/60/24)+"天前";
-//    }
-//
-//    else if(diff>=2592000 && diff<31104000)
-//    {
-//        return parseInt(diff/60/60/24/30)+"月前";
-//    }
-//    else
-//    {
-//        return parseInt(diff/60/60/24/30/12)+"年前";
-//    }
-
-//    //年
-//    var yearD = moment(new Date()).year()-moment(date).year();
-//
-//    if (yearD > 0)
-//    {
-//        return yearD + "年前";
-//    }
-//
-//    //月
-//    var monthD = moment(new Date()).month()-moment(date).month();
-//
-//    if (monthD > 0)
-//    {
-//        return monthD + "月前";
-//    }
-//
-//    //日
-//    var dayD = moment(new Date()).day()-moment(date).day();
-//
-//    if (dayD > 0)
-//    {
-//        return dayD + "天前";
-//    }
-//
-//    //小时
-//    var hourD = moment(new Date()).hour()-moment(date).hour();
-//    if (hourD<0)
-//    {
-//        hourD = moment(new Date()).hour()-moment(date).hour()+8;
-//    }
-//
-//    if (hourD > 0)
-//    {
-//        return hourD + "小时前";
-//    }
-//
-//    //分
-//    var minuteD = moment(new Date()).minute()-moment(date).minute();
-//
-//    if (minuteD > 0)
-//    {
-//        return minuteD + "分钟前";
-//    }
-//
-//    //秒
-//    var secondD = moment(new Date()).second()-moment(date).second();
-//
-//    if (secondD > 0)
-//    {
-//        return secondD + "秒前";
-//    }
 
     return '未知';
 }
@@ -353,16 +297,67 @@ function sharePhoto(photoId,done){
 //            response.error('查找图片失败 : ' + error);
             cosole.dir(error);
             done(null,'查找图片失败');
-        }).then().then().then();
+        });//.then().then().then();
 }
 
-AV.Cloud.define("sharePhoto",function(request, response) {
+if (!__production) AV.Cloud.define("test_sharePhoto",function(request, response) {
     var photoId = request.params.photoId;
     sharePhoto(photoId,function(photoDict,error){
 
         if (photoDict && !error)
         {
             response.success(photoDict);
+        }
+        else
+        {
+            response.error(error);
+        }
+    });
+});
+
+
+function shareConstellation(constellationId,done){
+
+    console.log("分享星座 : "+constellationId);
+
+    if (!constellationId)
+    {
+        done(null,'参数错误');
+    }
+
+    var resultDic = {};
+    resultDic['objectId'] = constellationId;
+
+    var constellationQ = new AV.Query(Constellation);
+    constellationQ.equalTo('objectId',constellationId);
+    constellationQ.first().then(function(constellation) {
+
+        resultDic['name'] = constellation.get('name');
+        resultDic['star'] = constellation.get('star');
+        resultDic['description'] = constellation.get('description');
+        resultDic['luckyColor'] = constellation.get('luckyColor');
+        resultDic['luckyNumber'] = constellation.get('luckyNumber');
+        resultDic['luckyFortune'] = constellation.get('luckyFortune');
+        resultDic['luckyConstellation'] = constellation.get('luckyConstellation');
+
+        resultDic['updatedAt'] = calculateDate(constellation.updatedAt);
+
+        done(resultDic,null);
+
+    },function(error) {
+
+        cosole.dir(error);
+        done(null,'查找星座失败');
+    });
+}
+
+if (!__production) AV.Cloud.define("test_shareConstellation",function(request, response) {
+    var constellationId = request.params.constellationId;
+    shareConstellation(constellationId,function(constellationDict,error){
+
+        if (constellationDict && !error)
+        {
+            response.success(constellationDict);
         }
         else
         {
