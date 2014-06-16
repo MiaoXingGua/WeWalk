@@ -13,45 +13,46 @@ initial-scale=1.0" />
 </style>
 
 </head>
-<% if (constellationDict){ %>
+
 <body>
-<div style="position:absolute; left:0; top:0; width:100%; height:560px;"><img src="img/bg.png" width=100% height=100%></div>
+  <% if (constellationDict){ %>
+<div style="position:absolute; left:0; top:0; width:100%; height:560px;"><img src="/img/bg.png" width=100% height=100%></div>
 <div style="position:relative; left:0; top:0; width:100%; height:36px; margin:0 auto; background-color: #62b8e9; ">
 
-	<p style="text-align:center;color:white;font-size:18px;line-height:36px; "><%= constellationDict['name'] %></p>
-	
-	
+  <p style="text-align:center;color:white;font-size:18px;line-height:36px; "><%= constellationDict['name'] %></p>
+  
+  
 </div>
-<div style="position:relative; left:0; top:0; width:79px; height:79px; margin:8px auto; "><img src="img/constell_grey_1.png" width=100% height=100%></div>
+<div style="position:relative; left:0; top:0; width:79px; height:79px; margin:8px auto; "><img src="/img/constell_grey_1.png" width=100% height=100%></div>
 
 <div style="position:relative; left:0; top:0; width:104px; height:22px; margin:10px auto; ">
 
-	<% for(var i=0; i<constellationDict['star']; i++) {%>
-		<div class="xzstar"><img src="img/start_select.png" width=100% height=100%></div>
-	<% } %>
+  <% for(var i=0; i<constellationDict['star']; i++) {%>
+    <div class="xzstar"><img src="/img/start_select.png" width=100% height=100%></div>
+  <% } %>
 
-	<% for(var i=0; i<4-constellationDict['star']; i++) {%>
-		<div class="xzstar"><img src="img/start_default.png" width=100% height=100%></div>
-	<% } %>
+  <% for(var i=0; i<4-constellationDict['star']; i++) {%>
+    <div class="xzstar"><img src="/img/start_default.png" width=100% height=100%></div>
+  <% } %>
 
 </div>
 
-<div style="position:relative; left:0; top:0; width:100%; height:3px"><img src="img/constell_detail_line.png" width=100% height=100%></div>
+<div style="position:relative; left:0; top:0; width:100%; height:3px"><img src="/img/constell_detail_line.png" width=100% height=100%></div>
 
 <div style="position:relative; left:0; top:25px; width:100%; height:260px">
-	
-	<p style="margin:0 26px;font-size:14px;line-height:20px;text-indent:28px;"><div> <%= constellationDict['description'] %> </div></p>
+  
+  <p style="margin:0 26px;font-size:14px;line-height:20px;text-indent:28px;"><%= constellationDict['description'] %> </p>
 
 </div>
 
 <div style="position:relative; left:0; top:0; width:100%; height:134px">
-<img  src="img/constell_detial_bottombj.png" width=100% height=100%>
+<img  src="/img/constell_detial_bottombj.png" width=100% height=100%>
 <div class="xingyun" style="position:absolute; left:34%; top:20px; width:200px; height:66px">
 
-	<p>幸运颜色：<%= constellationDict['luckyColor'] %></p>
-	<p>幸运数字：<%= constellationDict['luckyNumber'] %></p>
-	<p>幸运物品：<%= constellationDict['luckyFortune'] %></p>
-	<p>契合星座：<%= constellationDict['luckyConstellation'] %></p>
+  <p>幸运颜色：<%= constellationDict['luckyColor'] %></p>
+  <p>幸运数字：<%= constellationDict['luckyNumber'] %></p>
+  <p>幸运物品：<%= constellationDict['luckyFortune'] %></p>
+  <p>契合星座：<%= constellationDict['luckyConstellation'] %></p>
 </div>
 
 </div>
