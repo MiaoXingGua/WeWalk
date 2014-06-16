@@ -47,7 +47,7 @@ app.get('/shareConstellation/:objectId', function(request, response) {
     var constellationId = request.params.objectId;
     shareConstellation(constellationId,function(constellationDict,error){
 
-        if (photoDict && !error)
+        if (constellationDict && !error)
         {
             response.render('shareConstellation',{ constellationDict : constellationDict});
         }
