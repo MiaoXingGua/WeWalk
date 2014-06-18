@@ -256,17 +256,24 @@ function sharePhoto(photoId,done){
             resultDic['user'] = userDictFromUserObject(user);
 
 //            var userFQ = photo.relation('faviconUsers').query();
-            var userFQ = new AV.Query(Relation);
-            userFQ.equalTo('photo',AV.Object.createWithoutData("Photo", photoId));
-            userFQ.equalTo('type','favicon');
-            userFQ.descending('createdAt');
-            userFQ.limit(8);
-            userFQ.find().then(function(faviconUsers){
+            var relationQ = new AV.Query(Relation);
+            relationQ.equalTo('photo',AV.Object.createWithoutData("Photo", photoId));
+            relationQ.equalTo('type','favicon');
+            relationQ.descending('createdAt');
+            relationQ.select('user');
+            relationQ.include('user');
+            relationQ.limit(8);
+            relationQ.find().then(function(relations){
 //
 //                resultDic['faviconsCount'] = faviconUsers.length;
 
 //                   console.log(faviconUsers.length);
-                if (faviconUsers.length > 0)
+                if (relations.length > 0)
+                    var faviconUsers = new Array();;
+                    for (var i in relations)
+                    {
+                        faviconUsers.push(relations[i].get('user'));
+                    }
                     resultDic['faviconUsers'] = userDictsFromUserObjects(faviconUsers);
                 else
                     resultDic['faviconUsers'] = [];
