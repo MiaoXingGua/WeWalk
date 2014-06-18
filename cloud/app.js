@@ -258,9 +258,7 @@ function sharePhoto(photoId,done){
 //            var userFQ = photo.relation('faviconUsers').query();
             var userFQ = new AV.Query(Relation);
             userFQ.equalTo('photo',AV.Object.createWithoutData("Photo", photoId));
-            userFQ.equalTo('user',AV.Object.createWithoutData("_User", user.id));
             userFQ.equalTo('type','favicon');
-
             userFQ.descending('createdAt');
             userFQ.limit(8);
             userFQ.find().then(function(faviconUsers){
