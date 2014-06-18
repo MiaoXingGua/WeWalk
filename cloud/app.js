@@ -8,7 +8,7 @@ var Photo = AV.Object.extend('Photo');
 var Comment = AV.Object.extend('Comment');
 var Content = AV.Object.extend('Content');
 var Constellation = AV.Object.extend('Constellation');
-
+var Relation = AV.Object.extend('Relation');
 //时间
 var moment = require('moment');
 
@@ -255,7 +255,13 @@ function sharePhoto(photoId,done){
             var user = photo.get('user');
             resultDic['user'] = userDictFromUserObject(user);
 
-            var userFQ = photo.relation('faviconUsers').query();
+//            var userFQ = photo.relation('faviconUsers').query();
+            var userFQ = new AV.Query(Relation);
+            userFQ.equalTo('photo',AV.Object.createWithoutData("Photo", photoId));
+            userFQ.equalTo('user',AV.Object.createWithoutData("_User", user.id));
+            userFQ.equalTo('type','favicon');
+
+            userFQ.descending('createdAt');
             userFQ.limit(8);
             userFQ.find().then(function(faviconUsers){
 //
