@@ -269,15 +269,18 @@ function sharePhoto(photoId,done){
 
 //                   console.log(faviconUsers.length);
                 if (relations.length > 0)
+                {
                     var faviconUsers = new Array();;
                     for (var i in relations)
                     {
                         faviconUsers.push(relations[i].get('user'));
                     }
                     resultDic['faviconUsers'] = userDictsFromUserObjects(faviconUsers);
+                }
                 else
+                {
                     resultDic['faviconUsers'] = [];
-
+                }
                 var commentQ = new AV.Query(Comment);
 
                 commentQ.equalTo('photo',AV.Object.createWithoutData("Photo", photoId));
