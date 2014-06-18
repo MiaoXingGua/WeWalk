@@ -232,6 +232,9 @@ function sharePhoto(photoId,done){
             resultDic['height'] = photo.get('height');
             resultDic['createdAt'] = calculateDate(photo.createdAt);
 
+
+            resultDic['commentsCount'] = photo.get('numberOfComments');
+            resultDic['faviconsCount'] = photo.get('numberOfFavicons');
 //            console.dir(photo.createdAt);
 //            console.log(photo.createdAt);
 //            return;
@@ -256,7 +259,7 @@ function sharePhoto(photoId,done){
             userFQ.limit(8);
             userFQ.find().then(function(faviconUsers){
 //
-                resultDic['faviconsCount'] = faviconUsers.length;
+//                resultDic['faviconsCount'] = faviconUsers.length;
 
 //                   console.log(faviconUsers.length);
                 if (faviconUsers.length > 0)
@@ -279,7 +282,7 @@ function sharePhoto(photoId,done){
             }).then(function(comments){
 
 //                    console.log(comments.length);
-                    resultDic['commentsCount'] = comments.length;
+//                    resultDic['commentsCount'] = comments.length;
                     if (comments.length > 0)
                         resultDic['comments'] = commentDictsFromCommentObjects(comments);
                     else
@@ -315,7 +318,6 @@ if (!__production) AV.Cloud.define("test_sharePhoto",function(request, response)
         }
     });
 });
-
 
 function shareConstellation(constellationId,done){
 
