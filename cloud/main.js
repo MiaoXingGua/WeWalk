@@ -143,6 +143,14 @@ AV.Cloud.define("getRequest",function(request, response) {
     });
 });
 
+AV.Cloud.define("sharePhotoDomian",function(request, response) {
+    response.success("http://youweek.avosapps.com/sharePhoto/");
+});
+
+AV.Cloud.define("shareConstellationDomian",function(request, response) {
+    response.success("http://youweek.avosapps.com/shareConstellation/");
+});
+
 //538d3786e4b0518d450c4369
 //AV.Cloud.define("changePhotoCreatedAt",function(request, response) {
 //
