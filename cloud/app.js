@@ -245,7 +245,6 @@ function sharePhoto(photoId,done){
 //            return;
 
             var content = photo.get('content');
-
             if (content)
             {
                 var contentDict = {};

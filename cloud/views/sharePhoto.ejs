@@ -266,11 +266,16 @@
                 };  
             } 
             document.getElementById("ios_download_link").onclick = applink(appstore);
-        if(isIos()) {
+            if (isInWeixin()) {
+
+                 $(".ios_download_link").show();
+                document.getElementById("ios_download_link").onclick =  function(){alert("检测到您正使用微信，请点击右上角按钮选择 在Safari中打开 并进入微行。")} ;
+               
+            }else if(isIos()) {
             $(".ios_download_link").show();
             documen .getElementById("ios_download_link").text="正在下载";
             
-        } else {
+        }else {
             $(".android_download_link").show();
             // window.location = "intent://[host]/"+"url="+openUrl+"#Intent;scheme=[scheme];package=[package_name];end";
         }
