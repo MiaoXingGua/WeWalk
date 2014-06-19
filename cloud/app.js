@@ -232,7 +232,6 @@ function sharePhoto(photoId,done){
             resultDic['height'] = photo.get('height');
             resultDic['createdAt'] = calculateDate(photo.createdAt);
 
-
             resultDic['commentsCount'] = photo.get('numberOfComments');
             resultDic['faviconsCount'] = photo.get('numberOfFavicons');
 //            console.dir(photo.createdAt);

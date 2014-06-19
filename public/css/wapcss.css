@@ -27,7 +27,7 @@ body{background:#f2f2f2;}
 ul.contian_t li{ height:35px; line-height:35px; float:left;}
 ul.contian_t li.t_img{ height:35px; width:35px; float:left;}
 ul.contian_t li.t_img img{ height:35px; width:35px; display:block; overflow:hidden;}
-ul.contian_t li.t_wen{ color:#282828;  font-size:13px; padding-left:10px; width:165px; float:left;}
+ul.contian_t li.t_wen{ color:#282828;  font-size:13px; padding-left:10px; width:150px; float:left;}
 ul.contian_t li.t_time{ color:#999; font-size:13px; float:right; background:url(/img/photo_detail/time.png) no-repeat 0px 12px; text-align:right;padding-left:12px;}
 .contian p{ font-size:13px; color:#6c6c6c; padding:6px 0px; overflow:hidden; clear:left;}
 .up_login{ border-bottom:1px solid #e5e5e5;  border-top:1px solid #e5e5e5; height:55px; color:#9c9c9c;font-size:14px; line-height:55px;
