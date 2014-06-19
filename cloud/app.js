@@ -232,8 +232,14 @@ function sharePhoto(photoId,done){
             resultDic['height'] = photo.get('height');
             resultDic['createdAt'] = calculateDate(photo.createdAt);
 
-            resultDic['commentsCount'] = photo.get('numberOfComments');
-            resultDic['faviconsCount'] = photo.get('numberOfFavicons');
+            var commentsCount = photo.get('numberOfComments');
+            if (commentsCount) resultDic['commentsCount'] = photo.get('numberOfComments');
+            else resultDic['commentsCount'] = 0;
+
+            var faviconsCount = photo.get('numberOfFavicons');
+            if (faviconsCount) resultDic['faviconsCount'] = photo.get('numberOfFavicons');
+            else resultDic['faviconsCount'] = 0;
+
 //            console.dir(photo.createdAt);
 //            console.log(photo.createdAt);
 //            return;
