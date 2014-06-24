@@ -146,36 +146,36 @@ AV.Cloud.define("getRequest",function(request, response) {
 AV.Cloud.define("sharePhotoDomian",function(request, response) {
 
     //1.3
-//    response.success("http://youweek.avosapps.com/sharePhoto/");
+    response.success("http://youweek.avosapps.com/sharePhoto/");
 
     //1.4
-    var photoId = request.params.objectId;
-    if (photoId)      //不去确认photo是否存在
-    {
-        response.success({'url':"http://youweek.avosapps.com/sharePhoto/"+photoId,'title':"来自微行的分享",'content':""});
-    }
-    else
-    {
-        response.error("参数错误哦~");
-    }
+//    var photoId = request.params.objectId;
+//    if (photoId)      //不去确认photo是否存在
+//    {
+//        response.success({'url':"http://youweek.avosapps.com/sharePhoto/"+photoId,'title':"来自微行的分享",'content':""});
+//    }
+//    else
+//    {
+//        response.error("参数错误哦~");
+//    }
 
 });
 
 AV.Cloud.define("shareConstellationDomian",function(request, response) {
 
     //1.3
-//    response.success("http://youweek.avosapps.com/shareConstellation/");
+    response.success("http://youweek.avosapps.com/shareConstellation/");
 
     //1.4
-    var constellationId = request.params.objectId;
-    if (constellationId)      //不去确认constellation是否存在
-    {
-        response.success({'url':"http://youweek.avosapps.com/shareConstellation/"+constellationId,'title':"来自微行的分享",'content':""});
-    }
-    else
-    {
-        response.error("参数错误哦~");
-    }
+//    var constellationId = request.params.objectId;
+//    if (constellationId)      //不去确认constellation是否存在
+//    {
+//        response.success({'url':"http://youweek.avosapps.com/shareConstellation/"+constellationId,'title':"来自微行的分享",'content':""});
+//    }
+//    else
+//    {
+//        response.error("参数错误哦~");
+//    }
 });
 
 //538d3786e4b0518d450c4369
