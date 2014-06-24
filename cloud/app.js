@@ -324,7 +324,7 @@ function sharePhoto(photoId,done){
 }
 
 if (!__production) AV.Cloud.define("test_sharePhoto",function(request, response) {
-    var photoId = request.params.photoId;
+    var photoId = request.params.objectId;
     sharePhoto(photoId,function(photoDict,error){
 
         if (photoDict && !error)
@@ -354,6 +354,7 @@ function shareConstellation(constellationId,done){
     constellationQ.equalTo('objectId',constellationId);
     constellationQ.first().then(function(constellation) {
 
+        console.dir(constellation);
         resultDic['name'] = constellation.get('name');
         resultDic['star'] = constellation.get('star');
         resultDic['description'] = constellation.get('description');
@@ -374,7 +375,7 @@ function shareConstellation(constellationId,done){
 }
 
 if (!__production) AV.Cloud.define("test_shareConstellation",function(request, response) {
-    var constellationId = request.params.constellationId;
+    var constellationId = request.params.objectId;
     shareConstellation(constellationId,function(constellationDict,error){
 
         if (constellationDict && !error)
