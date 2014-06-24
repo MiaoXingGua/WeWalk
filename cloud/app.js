@@ -257,7 +257,8 @@ function sharePhoto(photoId,done){
             }
 
             var user = photo.get('user');
-            resultDic['user'] = userDictFromUserObject(user);
+            if (user) resultDic['user'] = userDictFromUserObject(user);
+            else resultDic['user'] = {};
 
 //            var userFQ = photo.relation('faviconUsers').query();
             var relationQ = new AV.Query(Relation);
