@@ -201,6 +201,8 @@ function calculateDate(date){
 }
 
 
+
+
 AV.Cloud.define("calculateDate",function(request, response) {
     calculateDate(new Date());
 });
@@ -225,97 +227,103 @@ function sharePhoto(photoId,done){
 
     photoQ.first().then(function(photo) {
 
-            resultDic['originalURL'] = photo.get('originalURL');
-            resultDic['thumbnailURL'] = photo.get('thumbnailURL');
+            if (photo)
+            {
+                resultDic['originalURL'] = photo.get('originalURL');
+                resultDic['thumbnailURL'] = photo.get('thumbnailURL');
 
-            resultDic['width'] = photo.get('width');
-            resultDic['height'] = photo.get('height');
-            resultDic['createdAt'] = calculateDate(photo.createdAt);
+                resultDic['width'] = photo.get('width');
+                resultDic['height'] = photo.get('height');
+                resultDic['createdAt'] = calculateDate(photo.createdAt);
 
-            var commentsCount = photo.get('numberOfComments');
-            if (commentsCount) resultDic['commentsCount'] = photo.get('numberOfComments');
-            else resultDic['commentsCount'] = 0;
+                var commentsCount = photo.get('numberOfComments');
+                if (commentsCount) resultDic['commentsCount'] = photo.get('numberOfComments');
+                else resultDic['commentsCount'] = 0;
 
-            var faviconsCount = photo.get('numberOfFavicons');
-            if (faviconsCount) resultDic['faviconsCount'] = photo.get('numberOfFavicons');
-            else resultDic['faviconsCount'] = 0;
+                var faviconsCount = photo.get('numberOfFavicons');
+                if (faviconsCount) resultDic['faviconsCount'] = photo.get('numberOfFavicons');
+                else resultDic['faviconsCount'] = 0;
 
 //            console.dir(photo.createdAt);
 //            console.log(photo.createdAt);
 //            return;
 
-            var content = photo.get('content');
-            if (content)
-            {
-                var contentDict = {};
-                contentDict['text'] = content.get('text');
-                resultDic['content'] = contentDict;
-            }
-            else
-            {
-                resultDic['content'] = {'text':''};
-            }
+                var content = photo.get('content');
+                if (content)
+                {
+                    var contentDict = {};
+                    contentDict['text'] = content.get('text');
+                    resultDic['content'] = contentDict;
+                }
+                else
+                {
+                    resultDic['content'] = {'text':''};
+                }
 
-            var user = photo.get('user');
-            if (user) resultDic['user'] = userDictFromUserObject(user);
-            else resultDic['user'] = {};
+                var user = photo.get('user');
+                if (user) resultDic['user'] = userDictFromUserObject(user);
+                else resultDic['user'] = {};
 
 //            var userFQ = photo.relation('faviconUsers').query();
-            var relationQ = new AV.Query(Relation);
-            relationQ.equalTo('photo',AV.Object.createWithoutData("Photo", photoId));
-            relationQ.equalTo('type','favicon');
-            relationQ.descending('createdAt');
-            relationQ.select('user');
-            relationQ.include('user');
-            relationQ.limit(8);
-            relationQ.find().then(function(relations){
+                var relationQ = new AV.Query(Relation);
+                relationQ.equalTo('photo',AV.Object.createWithoutData("Photo", photoId));
+                relationQ.equalTo('type','favicon');
+                relationQ.descending('createdAt');
+                relationQ.select('user');
+                relationQ.include('user');
+                relationQ.limit(8);
+                relationQ.find().then(function(relations){
 //
 //                resultDic['faviconsCount'] = faviconUsers.length;
 
 //                   console.log(faviconUsers.length);
-                if (relations.length > 0)
-                {
-                    var faviconUsers = new Array();;
-                    for (var i in relations)
+                    if (relations.length > 0)
                     {
-                        faviconUsers.push(relations[i].get('user'));
+                        var faviconUsers = new Array();
+                        for (var i in relations)
+                        {
+                            faviconUsers.push(relations[i].get('user'));
+                        }
+                        resultDic['faviconUsers'] = userDictsFromUserObjects(faviconUsers);
                     }
-                    resultDic['faviconUsers'] = userDictsFromUserObjects(faviconUsers);
-                }
-                else
-                {
-                    resultDic['faviconUsers'] = [];
-                }
-                var commentQ = new AV.Query(Comment);
-
-                commentQ.equalTo('photo',AV.Object.createWithoutData("Photo", photoId));
-                commentQ.include(['user','content']);
-                return commentQ.find();
-
-            }, function(error) {
-
-//                response.error('查询收藏列表失败 : ' + error);
-                cosole.dir(error);
-                done(null,'查询收藏列表失败');
-
-            }).then(function(comments){
-
-//                    console.log(comments.length);
-//                    resultDic['commentsCount'] = comments.length;
-                    if (comments.length > 0)
-                        resultDic['comments'] = commentDictsFromCommentObjects(comments);
                     else
-                        resultDic['comments'] = [];
-//                    response.success(resultDic);
-                    done(resultDic,null);
+                    {
+                        resultDic['faviconUsers'] = [];
+                    }
+                    var commentQ = new AV.Query(Comment);
+
+                    commentQ.equalTo('photo',AV.Object.createWithoutData("Photo", photoId));
+                    commentQ.include(['user','content']);
+                    return commentQ.find();
 
                 }, function(error) {
 
-//                    response.error('查询评论列表失败 : ' + error);
+//                response.error('查询收藏列表失败 : ' + error);
                     cosole.dir(error);
-                    done(null,'查询评论列表失败');
+                    done(null,'查询收藏列表失败');
 
-                });
+                }).then(function(comments){
+
+//                    console.log(comments.length);
+//                    resultDic['commentsCount'] = comments.length;
+                        if (comments.length > 0)
+                            resultDic['comments'] = commentDictsFromCommentObjects(comments);
+                        else
+                            resultDic['comments'] = [];
+//                    response.success(resultDic);
+                        done(resultDic,null);
+
+                    }, function(error) {
+
+//                    response.error('查询评论列表失败 : ' + error);
+                        cosole.dir(error);
+                        done(null,'查询评论列表失败');
+
+                    });
+            }
+            cosole.dir(error);
+            done(null,'查找图片失败');
+
         },function(error) {
 //            response.error('查找图片失败 : ' + error);
             cosole.dir(error);

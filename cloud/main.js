@@ -143,6 +143,32 @@ AV.Cloud.define("getRequest",function(request, response) {
     });
 });
 
+AV.Cloud.define("checkSinaWebUserPassword",function(request, response) {
+
+    var uid = request.params.uid;
+    if (uid)
+    {
+        var userQ = new AV.Query(User);
+        userQ.equalTo('username',"sina"+uid);
+        userQ.find({
+            success: function(user) {
+                user.set("password", "sina"+uid+"youweek2014");
+                user.save(null, {
+                    success: function(user) {
+                        response.success(user);
+                    },
+                    error: function(user, error) {
+                        response.error(error);
+                    }
+                });
+            },
+            error: function(error) {
+                response.error(error);
+            }
+        });
+    }
+});
+
 AV.Cloud.define("sharePhotoDomian",function(request, response) {
 
     //1.3
