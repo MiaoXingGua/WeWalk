@@ -150,7 +150,7 @@ AV.Cloud.define("checkSinaWebUserPassword",function(request, response) {
     {
         var userQ = new AV.Query(User);
         userQ.equalTo('username',"sina"+uid);
-        userQ.find({
+        userQ.first({
             success: function(user) {
                 user.set("password", "sina"+uid+"youweek2014");
                 user.save(null, {
