@@ -143,6 +143,12 @@ AV.Cloud.define("getRequest",function(request, response) {
     });
 });
 
+AV.Cloud.define("headView",function(request, response) {
+
+
+
+});
+
 AV.Cloud.define("getUserFromSinaWebUid",function(request, response) {
 
     var uid = request.params.uid;
@@ -161,7 +167,7 @@ AV.Cloud.define("getUserFromSinaWebUid",function(request, response) {
 
                     user.save(null, {
                         success: function(user) {
-                            response.success({"username":user.get("username"),"password":user.get("userKey")});
+                            response.success({"username":user.get("username"),"password":user.get("userKey"),"isFrist":false});
                         },
                         error: function(user, error) {
                             response.error(error);
@@ -178,7 +184,7 @@ AV.Cloud.define("getUserFromSinaWebUid",function(request, response) {
 
                     user.signUp(null, {
                         success: function(user) {
-                            response.success({"username":user.username,"password":user.password});
+                            response.success({"username":user.username,"password":user.password,"isFrist":true});
                         },
                         error: function(user, error) {
                             response.error(error);
