@@ -144,7 +144,22 @@ AV.Cloud.define("getRequest",function(request, response) {
 });
 
 AV.Cloud.define("headView",function(request, response) {
-
+    var userId = request.params.userId;
+    var headview = request.params.headview;
+    console.log(userId);
+    console.log(headview);
+    if (headview && userId)
+    {
+        var user =  AV.Object.createWithoutData("_User", userId);
+        user.set('headViewURL',headview);
+        user.set('largeHeadViewURL',headview+"?imageMogr2/auto-orient/");
+        user.set('smallHeadViewURL',headview+"?imageMogr2/auto-orient/thumbnail/128x128");
+        user.save().then(function(user) {
+            response.success(user);
+        }, function(error) {
+            response.error(error);
+        });
+    }
 
 
 });
