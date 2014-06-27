@@ -167,7 +167,7 @@ AV.Cloud.define("getUserFromSinaWebUid",function(request, response) {
 
                     user.save(null, {
                         success: function(user) {
-                            response.success({"username":user.get("username"),"password":user.get("userKey"),"isFrist":false});
+                            response.success({"username":user.get("username"),"password":user.get("userKey"),"isFirst":false});
                         },
                         error: function(user, error) {
                             response.error(error);
@@ -184,7 +184,7 @@ AV.Cloud.define("getUserFromSinaWebUid",function(request, response) {
 
                     user.signUp(null, {
                         success: function(user) {
-                            response.success({"username":user.get("username"),"password":user.get("userKey"),"isFrist":true});
+                            response.success({"username":user.get("username"),"password":user.get("userKey"),"isFirst":true});
                         },
                         error: function(user, error) {
                             response.error(error);
