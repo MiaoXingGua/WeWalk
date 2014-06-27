@@ -150,18 +150,17 @@ AV.Cloud.define("headView",function(request, response) {
     console.log(headview);
     if (headview && userId)
     {
-        response.success(headview);
-//        var user =  AV.Object.createWithoutData("_User", userId);
-//        user.set('headViewURL',headview);
-//        user.set('largeHeadViewURL',headview+"?imageMogr2/auto-orient/");
-//        user.set('smallHeadViewURL',headview+"?imageMogr2/auto-orient/thumbnail/128x128");
-//        user.save().then(function(user) {
-//            console.log("成功");
-//            response.success(user);
-//        }, function(error) {
-//            console.log("失败");
-//            response.error(error);
-//        });
+        var user =  AV.Object.createWithoutData("_User", userId);
+        user.set('headViewURL',headview);
+        user.set('largeHeadViewURL',headview+"?imageMogr2/auto-orient/");
+        user.set('smallHeadViewURL',headview+"?imageMogr2/auto-orient/thumbnail/128x128");
+        user.save().then(function(user) {
+            console.log("成功");
+            response.success(user);
+        }, function(error) {
+            console.log("失败");
+            response.error(error);
+        });
     }
 });
 
