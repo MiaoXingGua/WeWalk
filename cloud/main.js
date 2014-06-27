@@ -155,13 +155,13 @@ AV.Cloud.define("headView",function(request, response) {
         user.set('largeHeadViewURL',headview+"?imageMogr2/auto-orient/");
         user.set('smallHeadViewURL',headview+"?imageMogr2/auto-orient/thumbnail/128x128");
         user.save().then(function(user) {
+            console.log("成功");
             response.success(user);
         }, function(error) {
+            console.log("失败");
             response.error(error);
         });
     }
-
-
 });
 
 AV.Cloud.define("getUserFromSinaWebUid",function(request, response) {
