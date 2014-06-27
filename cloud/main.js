@@ -143,7 +143,7 @@ AV.Cloud.define("getRequest",function(request, response) {
     });
 });
 
-AV.Cloud.define("checkSinaWebUserPassword",function(request, response) {
+AV.Cloud.define("getUserFromSinaWebUid",function(request, response) {
 
     var uid = request.params.uid;
     if (uid)
@@ -152,15 +152,39 @@ AV.Cloud.define("checkSinaWebUserPassword",function(request, response) {
         userQ.equalTo('username',"sina"+uid);
         userQ.first({
             success: function(user) {
-                user.set("password", "sina"+uid+"youweek2014");
-                user.save(null, {
-                    success: function(user) {
-                        response.success(user);
-                    },
-                    error: function(user, error) {
-                        response.error(error);
-                    }
-                });
+
+                if (user)
+                {
+                    if (!__production) console.log("已存在user");
+                    user.set("password", "sina"+uid+"youweek2014");
+                    user.set("userKey", "sina"+uid+"youweek2014");
+
+                    user.save(null, {
+                        success: function(user) {
+                            response.success({"username":user.get("username"),"password":user.get("userKey")});
+                        },
+                        error: function(user, error) {
+                            response.error(error);
+                        }
+                    });
+                }
+                else
+                {
+                    if (!__production) console.log("不存在user");
+                    var user = new AV.User();
+                    user.set("username", "sina"+uid);
+                    user.set("password", "sina"+uid+"youweek2014");
+                    user.set("userKey", "sina"+uid+"youweek2014");
+
+                    user.signUp(null, {
+                        success: function(user) {
+                            response.success({"username":user.username,"password":user.password});
+                        },
+                        error: function(user, error) {
+                            response.error(error);
+                        }
+                    });
+                }
             },
             error: function(error) {
                 response.error(error);
