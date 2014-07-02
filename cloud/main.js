@@ -179,8 +179,25 @@ AV.Cloud.afterSave("Comment", function(request) {
             console.dir(error);
          });
     }
-
 });
+
+AV.Cloud.afterDelete("Comment", function(request) {
+
+    var userId = request.object.get("user").id;
+    var photoId = request.object.get("photo").id;
+
+    console.log(userId+"_____"+photoId);
+
+    if (userId && photoId)
+    {
+        var photo =  AV.Object.createWithoutData("Photo", photoId);
+        var user =  AV.Object.createWithoutData("_User", userId);
+        _checkNumberOfCommtents(user,photo,function(success,error){
+            console.dir(error);
+        });
+    }
+});
+
 
 function _checkNumberOfCommtents(user,photo,done){
 
