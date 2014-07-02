@@ -174,9 +174,20 @@ AV.Cloud.afterSave("Comment", function(request) {
     if (userId && photoId)
     {
         var photo =  AV.Object.createWithoutData("Photo", photoId);
+        var user =  AV.Object.createWithoutData("_User", userId);
+        _checkNumberOfCommtents(user,photo,function(success,error){
+            console.dir(error);
+         });
+    }
 
+});
+
+function _checkNumberOfCommtents(user,photo,done){
+
+    if (user && photo)
+    {
         var commentQ = new AV.Query(Comment);
-        commentQ.equal('photo',photo);
+        commentQ.equalTo('photo',photo);
         commentQ.count({
             success: function(count) {
                 console.log("photo="+count);
@@ -184,15 +195,14 @@ AV.Cloud.afterSave("Comment", function(request) {
                 photo.save();
             },
             error: function(error) {
-                console.dir(error);
+
                 console.log("photo失败");
+                done(error);
             }
         });
 
-        var user =  AV.Object.createWithoutData("_User", userId);
-
         var commentQ = new AV.Query(Comment);
-        commentQ.equal('user',user);
+        commentQ.equalTo('user',user);
         commentQ.count({
             success: function(count) {
                 console.log("user="+count);
@@ -200,9 +210,26 @@ AV.Cloud.afterSave("Comment", function(request) {
                 user.save();
             },
             error: function(error) {
-                console.dir(error);
+
                 console.log("user失败");
+                done(error);
             }
+        });
+    }
+}
+
+AV.Cloud.define("_checkNumberOfCommtents",function(request, response) {
+    var userId = request.params.user;
+    var photoId = request.params.photo;
+
+    console.log(userId+"_____"+photoId);
+
+    if (userId && photoId)
+    {
+        var photo =  AV.Object.createWithoutData("Photo", photoId);
+        var user =  AV.Object.createWithoutData("_User", userId);
+        _checkNumberOfCommtents(user,photo,function(success,error){
+            console.dir(error);
         });
     }
 });
