@@ -169,33 +169,39 @@ AV.Cloud.afterSave("Comment", function(request) {
     var userId = request.object.get("user").id;
     var photoId = request.object.get("photo").id;
 
+    console.log(userId+"_____"+photoId);
+
     if (userId && photoId)
     {
-        var user =  AV.Object.createWithoutData("_User", userId);
-
-        var commentQ = new AV.Query(Comment);
-        commentQ.equal('user',user);
-        commentQ.count({
-            success: function(count) {
-                user.set('numberOfCommtentPhotos',count);
-                user.save();
-            },
-            error: function(error) {
-
-            }
-        });
-
         var photo =  AV.Object.createWithoutData("Photo", photoId);
 
         var commentQ = new AV.Query(Comment);
         commentQ.equal('photo',photo);
         commentQ.count({
             success: function(count) {
+                console.log("photo="+count);
                 photo.set('numberOfComments',count);
                 photo.save();
             },
             error: function(error) {
+                console.dir(error);
+                console.log("photo失败");
+            }
+        });
 
+        var user =  AV.Object.createWithoutData("_User", userId);
+
+        var commentQ = new AV.Query(Comment);
+        commentQ.equal('user',user);
+        commentQ.count({
+            success: function(count) {
+                console.log("user="+count);
+                user.set('numberOfCommtentPhotos',count);
+                user.save();
+            },
+            error: function(error) {
+                console.dir(error);
+                console.log("user失败");
             }
         });
     }
