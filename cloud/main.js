@@ -164,6 +164,43 @@ AV.Cloud.define("headView",function(request, response) {
     }
 });
 
+AV.Cloud.afterSave("Comment", function(request) {
+
+    var userId = request.object.get("user").id;
+    var photoId = request.object.get("photo").id;
+
+    if (userId && photoId)
+    {
+        var user =  AV.Object.createWithoutData("_User", userId);
+
+        var commentQ = new AV.Query(Comment);
+        commentQ.equal('user',user);
+        commentQ.count({
+            success: function(count) {
+                user.set('numberOfCommtentPhotos',count);
+                user.save();
+            },
+            error: function(error) {
+
+            }
+        });
+
+        var photo =  AV.Object.createWithoutData("Photo", photoId);
+
+        var commentQ = new AV.Query(Comment);
+        commentQ.equal('photo',photo);
+        commentQ.count({
+            success: function(count) {
+                photo.set('numberOfComments',count);
+                photo.save();
+            },
+            error: function(error) {
+
+            }
+        });
+    }
+});
+
 AV.Cloud.define("getUserFromSinaWebUid",function(request, response) {
 
     var uid = request.params.uid;
