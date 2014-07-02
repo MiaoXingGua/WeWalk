@@ -201,34 +201,35 @@ AV.Cloud.afterDelete("Comment", function(request) {
 
 function _checkNumberOfCommtents(user,photo,done){
 
-    if (user && photo)
+    if (photo)
     {
         var commentQ = new AV.Query(Comment);
         commentQ.equalTo('photo',photo);
         commentQ.count({
             success: function(count) {
-                console.log("photo="+count);
+
                 photo.set('numberOfComments',count);
                 photo.save();
             },
             error: function(error) {
 
-                console.log("photo失败");
                 done(error);
             }
         });
+    }
 
+    if (user)
+    {
         var commentQ = new AV.Query(Comment);
         commentQ.equalTo('user',user);
         commentQ.count({
             success: function(count) {
-                console.log("user="+count);
+
                 user.set('numberOfCommtentPhotos',count);
                 user.save();
             },
             error: function(error) {
 
-                console.log("user失败");
                 done(error);
             }
         });
@@ -250,6 +251,47 @@ AV.Cloud.define("_checkNumberOfCommtents",function(request, response) {
         });
     }
 });
+
+function _checkNumberOfFavicons(user,photo,done){
+
+    if (photo)
+    {
+        var relationQ = new AV.Query(Relation);
+        relationQ.equalTo('photo',photo);
+        relationQ.equalTo('type',"favicon");
+        relationQ.count({
+            success: function(count) {
+
+                photo.set('numberOfFavicons',count);
+                photo.save();
+            },
+            error: function(error) {
+
+                done(error);
+            }
+        });
+    }
+
+    if (user)
+    {
+        var relationQ = new AV.Query(Relation);
+        relationQ.equalTo('user',user);
+        relationQ.equalTo('type',"favicon");
+        relationQ.count({
+            success: function(count) {
+
+                user.set('numberOfFaviconPhotos',count);
+                user.save();
+            },
+            error: function(error) {
+
+                done(error);
+            }
+        });
+    }
+}
+
+
 
 AV.Cloud.define("getUserFromSinaWebUid",function(request, response) {
 
