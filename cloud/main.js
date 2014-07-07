@@ -167,18 +167,26 @@ AV.Cloud.define("headView",function(request, response) {
 AV.Cloud.afterDelete("Photo", function(request) {
 
     var photoId = request.object.id;
-    var relationQ = new AV.Query(Relation);
-    var photo = AV.Object.createWithoutData('Photo', photoId);
-    relationQ.equalTo("photo", photo);
-    relationQ.find({
-        success: function(relations) {
-            //查询的照片的relation，遍历删除
-            AV.Object.destroyAll(relations);
-        },
-        error: function(error) {
-            console.error("Error finding relation of photr " + photoId + " : " + error.code + " : " + error.message);
-        }
-    });
+    if (photoId)
+    {
+        var relationQ = new AV.Query(Relation);
+        var photo = AV.Object.createWithoutData('Photo', photoId);
+        relationQ.equalTo("photo", photo);
+        relationQ.find({
+            success: function(relations) {
+                //查询的照片的relation，遍历删除
+                AV.Object.destroyAll(relations);
+            },
+            error: function(error) {
+                console.error("Error finding relation of photo " + photoId + " : " + error.code + " : " + error.message);
+            }
+        });
+    }
+    else
+    {
+        console.error("photoId is nil");
+    }
+
 });
 
 AV.Cloud.afterSave("Comment", function(request) {
