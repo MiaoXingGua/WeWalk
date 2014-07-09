@@ -1031,7 +1031,7 @@ function PM25() {
 //release
 
 
-AV.Cloud.setInterval('PM25_timer', 60*60, PM25);
+AV.Cloud.setInterval('PM25_timer', 20*60, PM25);
 
 AV.Cloud.define("PM25_define", PM25);
 
