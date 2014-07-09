@@ -1030,14 +1030,11 @@ function PM25() {
 //release
 //release
 
-if (__production)
-{
-    AV.Cloud.setInterval('PM25_timer', 60*60, PM25);
-}
-else
-{
-    AV.Cloud.define("PM25_define", PM25);
-}
+
+AV.Cloud.setInterval('PM25_timer', 60*60, PM25);
+
+AV.Cloud.define("PM25_define", PM25);
+
 
 //创建通知
 function createPush(users,pushDate,alert,done){
